@@ -19,10 +19,10 @@ public:
 	AJCharacter();
 
 protected:
-
+	//ÉãÏñ»úĞµ±Û
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComp;
-
+	//ÉãÏñÍ·
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* CameraComp;
 	// Called when the game starts or when spawned
