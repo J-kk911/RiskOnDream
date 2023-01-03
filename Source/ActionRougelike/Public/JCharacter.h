@@ -14,22 +14,33 @@ class ACTIONROUGELIKE_API AJCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+protected:
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AActor> ProjectileClass;
+
 public:
 	// Sets default values for this character's properties
 	AJCharacter();
 
 protected:
-	//摄像机械臂
-	UPROPERTY(VisibleAnywhere)
-	USpringArmComponent* SpringArmComp;
-	//摄像头
-	UPROPERTY(VisibleAnywhere)
-	UCameraComponent* CameraComp;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	void MoveForward(float value);
+	//摄像机械臂
+	UPROPERTY(VisibleAnywhere)
+	USpringArmComponent* SpringArmComp;
 
+	//摄像头
+	UPROPERTY(VisibleAnywhere)
+	UCameraComponent* CameraComp;
+
+	//向前移动
+	void MoveForward(float value);
+	//想右移动
+	void MoveRight(float value);
+	//初级攻击
+	void PrimaryAttack();
 
 public:	
 	// Called every frame
