@@ -2,10 +2,9 @@
 
 
 #include "JCharacter.h"
-#include "Camera/CameraComponent.h"
-#include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "JMagicProjectile.h"
 
 
 // Sets default values
@@ -14,20 +13,22 @@ AJCharacter::AJCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	//赋予实例
+	//赋予实例，并依附于根组件
 	SpringArmComp = CreateDefaultSubobject <USpringArmComponent>("SpringArmComp");
-	//使用摄像臂控制角色旋转
-	SpringArmComp->bUsePawnControlRotation = true;
 	SpringArmComp->SetupAttachment(RootComponent);
 
 	CameraComp = CreateDefaultSubobject <UCameraComponent>("CameraComp");
 	CameraComp->SetupAttachment(SpringArmComp);
 
+
+	//使用 Controller 控制摄像机臂旋转
+	SpringArmComp->bUsePawnControlRotation = true;
+	//不使用 Controller 控制角色旋转
+	bUseControllerRotationYaw = false;
+	//角色自动朝向运动方向
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
-	//不使用控制器控制角色旋转
-	bUseControllerRotationYaw = false;
-	
+
 }
 
 // Called when the game starts or when spawned
@@ -55,12 +56,13 @@ void AJCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAxis("MoveForward",this,&AJCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AJCharacter::MoveRight);
 
-	//视角
+	//视角，将动作输入到 Controller
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 
 	//操作
 	PlayerInputComponent->BindAction("PrimaryAttack",IE_Pressed,this,&AJCharacter::PrimaryAttack);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 }
 
 
@@ -80,9 +82,11 @@ void AJCharacter::MoveRight(float value)
 	FRotator ControlRot = GetControlRotation();
 	//转换为相机的前进方向
 	FVector ContorlRightVector = UKismetMathLibrary::GetRightVector(ControlRot);
-	//输入到input
+	//输入到Movementinput
 	AddMovementInput(ContorlRightVector, value);
 }
+
+
 
 
 void AJCharacter::PrimaryAttack()

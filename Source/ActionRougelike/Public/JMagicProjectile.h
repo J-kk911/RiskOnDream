@@ -22,15 +22,15 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	//球体
+	//球体组件
 	UPROPERTY(VisibleAnywhere)
 	USphereComponent* SphereComp;
 
-	//抛射物
+	//移动组件
 	UPROPERTY(VisibleAnywhere)
 	UProjectileMovementComponent* MovementComp;
 
-	//粒子特效
+	//粒子特效组件
 	UPROPERTY(VisibleAnywhere)
 	UParticleSystemComponent* EffectComp;
 

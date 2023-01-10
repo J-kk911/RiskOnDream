@@ -3,11 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
 #include "JCharacter.generated.h"
 
-class USpringArmComponent;
-class UCameraComponent;
+
 
 UCLASS()
 class ACTIONROUGELIKE_API AJCharacter : public ACharacter
@@ -15,6 +16,7 @@ class ACTIONROUGELIKE_API AJCharacter : public ACharacter
 	GENERATED_BODY()
 
 protected:
+	//在蓝图中手动设置一个类的实例
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AActor> ProjectileClass;
 
@@ -37,8 +39,9 @@ protected:
 
 	//向前移动
 	void MoveForward(float value);
-	//想右移动
+	//向右移动
 	void MoveRight(float value);
+
 	//初级攻击
 	void PrimaryAttack();
 

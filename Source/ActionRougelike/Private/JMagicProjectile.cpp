@@ -11,18 +11,22 @@ AJMagicProjectile::AJMagicProjectile()
 
 	//初始化球体并设为根组件
 	SphereComp = CreateDefaultSubobject<USphereComponent>("SphereComp");
+	RootComponent = SphereComp;
+
 	//碰撞设定为Projectile预设
 	SphereComp->SetCollisionProfileName("Projectile");
-	RootComponent = SphereComp;
+
 
 	//初始化运动
 	MovementComp = CreateDefaultSubobject<UProjectileMovementComponent>("MovementComp");
+
 	MovementComp->InitialSpeed = 1000.0F;
 	MovementComp->bRotationFollowsVelocity = true;
 	MovementComp->bInitialVelocityInLocalSpace = true;
 
 	//初始化粒子特效
 	EffectComp = CreateDefaultSubobject<UParticleSystemComponent>("EffectComp");
+	//依附于球碰撞体
 	EffectComp->SetupAttachment(SphereComp);
 
 }
@@ -38,6 +42,5 @@ void AJMagicProjectile::BeginPlay()
 void AJMagicProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
