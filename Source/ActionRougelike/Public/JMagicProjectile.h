@@ -7,6 +7,7 @@
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "Components/AudioComponent.h"
 #include "JMagicProjectile.generated.h"
 
 UCLASS()
@@ -34,9 +35,29 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UParticleSystemComponent* EffectComp;
 
+	//是否被打击
+	UPROPERTY(VisibleAnywhere)
+	bool IsHit;
+	
+	//等待销毁时间
+	UPROPERTY(VisibleAnywhere)
+	int64 WaitTick; 
+
+	//声音特效
+	UPROPERTY(VisibleAnywhere)
+	UAudioComponent* AudioComp;
+
+	//检测销毁
+	UFUNCTION()
+	void DestroyCheck();
+
+	//被打击
+	UFUNCTION()
+	void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
 
 };

@@ -16,18 +16,33 @@ AJMagicProjectile::AJMagicProjectile()
 	//碰撞设定为Projectile预设
 	SphereComp->SetCollisionProfileName("Projectile");
 
-
 	//初始化运动
 	MovementComp = CreateDefaultSubobject<UProjectileMovementComponent>("MovementComp");
-
 	MovementComp->InitialSpeed = 1000.0F;
 	MovementComp->bRotationFollowsVelocity = true;
 	MovementComp->bInitialVelocityInLocalSpace = true;
 
 	//初始化粒子特效
 	EffectComp = CreateDefaultSubobject<UParticleSystemComponent>("EffectComp");
+
+	//初始化默认资源
+	//静态加载资源
+	static ConstructorHelpers::FObjectFinder<UParticleSystem> ParticleAsset(
+		TEXT("/Game/ParagonGideon/FX/Particles/Gideon/Abilities/Primary/FX/P_Gideon_Primary_Projectile.P_Gideon_Primary_Projectile"));
+	EffectComp->SetTemplate(ParticleAsset.Object);
+
 	//依附于球碰撞体
 	EffectComp->SetupAttachment(SphereComp);
+
+	//被撞击时触发
+	SphereComp->OnComponentHit.AddDynamic(this,&AJMagicProjectile::OnActorHit);
+
+	//声音组件
+	AudioComp = CreateDefaultSubobject<UAudioComponent>("AudioComp");
+	//AudioComp->SetAutoActivate(false);
+
+	IsHit = false;
+	WaitTick = 20;
 
 }
 
@@ -42,5 +57,26 @@ void AJMagicProjectile::BeginPlay()
 void AJMagicProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	DestroyCheck();
 }
 
+void AJMagicProjectile::DestroyCheck()
+{
+	if (IsHit) {
+		WaitTick--;
+		if (WaitTick == 0) {
+			GetWorld()->DestroyActor(this);
+		}
+	}
+}
+
+void AJMagicProjectile::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) {
+	AudioComp->Play();
+
+	//动态加载资源
+	UParticleSystem* mt = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/ParagonGideon/FX/Particles/Gideon/Abilities/Primary/FX/P_Gideon_Primary_HitWorld.P_Gideon_Primary_HitWorld"));
+
+	EffectComp->SetTemplate(mt);
+
+	IsHit = true;
+}

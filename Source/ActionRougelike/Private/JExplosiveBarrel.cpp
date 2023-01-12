@@ -35,4 +35,6 @@ void AJExplosiveBarrel::OnActorHit(UPrimitiveComponent* HitComponent, AActor* Ot
 
 	// Logging example to make sure we reached the event
 	UE_LOG(LogTemp, Log, TEXT("Get a Hit!"));
+	GetWorld()->DestroyActor(this);
+
 }
