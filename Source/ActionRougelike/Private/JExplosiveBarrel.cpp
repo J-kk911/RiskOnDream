@@ -31,10 +31,14 @@ AJExplosiveBarrel::AJExplosiveBarrel()
 
 void AJExplosiveBarrel::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	RadialForceComp->FireImpulse();
-
-	// Logging example to make sure we reached the event
 	UE_LOG(LogTemp, Log, TEXT("Get a Hit!"));
-	GetWorld()->DestroyActor(this);
+	UE_LOG(LogTemp, Log, TEXT("%s"), *OtherActor->GetClass()->GetName());
+;
+	FString Target = "MagicProjectileBP_C";
+	if (OtherActor->GetClass()->GetName() == Target) {
+		RadialForceComp->FireImpulse();
+		GetWorld()->DestroyActor(this);
+	}
+
 
 }

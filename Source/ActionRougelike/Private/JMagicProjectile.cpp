@@ -47,6 +47,9 @@ AJMagicProjectile::AJMagicProjectile()
 	IsHit = false;
 	WaitTick = 30;
 
+	//不模拟物理
+	SphereComp->SetSimulatePhysics(false);
+	
 }
 
 // Called when the game starts or when spawned

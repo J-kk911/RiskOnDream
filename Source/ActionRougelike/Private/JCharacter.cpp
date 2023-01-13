@@ -101,8 +101,8 @@ void AJCharacter::MoveRight(float value)
 
 void AJCharacter::PrimaryAttack()
 {
-	//Ò»µ©¹¥»÷£¬½ÇÉ«¾Í³¯Ïò¹¥»÷·½Ïò£¬²¢ÑÓ³Ù2.0fÃë
-	GetWorldTimerManager().SetTimer(ViewModDelay,this,&AJCharacter::RotationToMovement,2.0f);
+	//Ò»µ©¹¥»÷£¬½ÇÉ«¾Í³¯Ïò¹¥»÷·½Ïò£¬²¢ÑÓ³Ù1.0fÃë
+	GetWorldTimerManager().SetTimer(ViewModDelay,this,&AJCharacter::RotationToMovement,1.0f);
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 	bUseControllerRotationYaw = true;
 
@@ -122,4 +122,5 @@ void AJCharacter::PrimaryAttack()
 void AJCharacter::RotationToMovement() {
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	bUseControllerRotationYaw = false;
+	GetWorldTimerManager().ClearTimer(ViewModDelay);
 }

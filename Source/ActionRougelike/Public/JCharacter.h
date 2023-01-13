@@ -47,9 +47,13 @@ protected:
 	//控制视野转动handle
 	FTimerHandle ViewModDelay;
 
+	//
+	FTimerHandle RotationTime;
+
 	//恢复正常视野
 	void RotationToMovement();
 
+	void RotationTimeEnd();
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
