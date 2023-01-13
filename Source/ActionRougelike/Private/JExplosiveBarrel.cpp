@@ -21,7 +21,7 @@ AJExplosiveBarrel::AJExplosiveBarrel()
 	RadialForceComp->SetAutoActivate(false);
 	RadialForceComp->Radius = 750.0f;
 	//强度
-	RadialForceComp->ImpulseStrength = 50000.0f;
+	RadialForceComp->ImpulseStrength = 100000.0f;
 
 	//shift+alt+s 搜索用法
 	MeshComp->OnComponentHit.AddDynamic(this, &AJExplosiveBarrel::OnActorHit);

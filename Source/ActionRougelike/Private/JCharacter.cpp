@@ -50,7 +50,7 @@ void AJCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 
-	UE_LOG(LogTemp, Error, TEXT("%d"), bUseControllerRotationYaw ? 1 : 0);
+	//UE_LOG(LogTemp, Error, TEXT("%d"), bUseControllerRotationYaw ? 1 : 0);
 
 }
 
