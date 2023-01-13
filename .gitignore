@@ -75,3 +75,6 @@ DerivedDataCache/*
 
 # JSON
 JSON/*
+
+# exe
+WindowsNoEditor
