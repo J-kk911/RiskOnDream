@@ -108,7 +108,7 @@ void AJCharacter::PrimaryAttack()
 
 	
 	//设置在手上发射
-	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+	FVector HandLocation = GetMesh()->GetSocketLocation("ik_hand_r");
 
 	FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
 
