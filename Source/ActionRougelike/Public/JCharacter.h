@@ -41,9 +41,14 @@ protected:
 	void MoveForward(float value);
 	//向右移动
 	void MoveRight(float value);
-
 	//初级攻击
 	void PrimaryAttack();
+
+	//控制视野转动handle
+	FTimerHandle ViewModDelay;
+
+	//恢复正常视野
+	void RotationToMovement();
 
 public:	
 	// Called every frame

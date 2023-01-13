@@ -37,11 +37,11 @@ protected:
 
 	//是否被打击
 	UPROPERTY(VisibleAnywhere)
-	bool IsHit;
+	uint8 IsHit:1;
 	
 	//等待销毁时间
 	UPROPERTY(VisibleAnywhere)
-	int64 WaitTick; 
+	uint64 WaitTick; 
 
 	//声音特效
 	UPROPERTY(VisibleAnywhere)

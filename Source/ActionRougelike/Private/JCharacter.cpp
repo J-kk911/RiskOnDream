@@ -20,15 +20,19 @@ AJCharacter::AJCharacter()
 	CameraComp = CreateDefaultSubobject <UCameraComponent>("CameraComp");
 	CameraComp->SetupAttachment(SpringArmComp);
 
-
+	
 	//使用 Controller 控制摄像机臂旋转
 	SpringArmComp->bUsePawnControlRotation = true;
+
+	//角色朝向controller方向
+
 	//不使用 Controller 控制角色旋转
 	bUseControllerRotationYaw = false;
+	
 	//角色自动朝向运动方向
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
-
+	
 }
 
 // Called when the game starts or when spawned
@@ -45,6 +49,9 @@ void AJCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+
+	UE_LOG(LogTemp, Error, TEXT("%d"), bUseControllerRotationYaw ? 1 : 0);
+
 }
 
 // Called to bind functionality to input
@@ -55,6 +62,7 @@ void AJCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	//移动
 	PlayerInputComponent->BindAxis("MoveForward",this,&AJCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AJCharacter::MoveRight);
+
 
 	//视角，将动作输入到 Controller
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
@@ -67,7 +75,8 @@ void AJCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 
 void AJCharacter::MoveForward(float value)
-{	
+{
+
 	//获得相机的Rotation方向
 	FRotator ControlRot = GetControlRotation();
 	//转换为相机的前进方向
@@ -78,12 +87,13 @@ void AJCharacter::MoveForward(float value)
 
 void AJCharacter::MoveRight(float value)
 {
+
 	//获得相机的Rotation方向
 	FRotator ControlRot = GetControlRotation();
 	//转换为相机的前进方向
 	FVector ContorlRightVector = UKismetMathLibrary::GetRightVector(ControlRot);
 	//输入到Movementinput
-	AddMovementInput(ContorlRightVector, value);
+	AddMovementInput(ContorlRightVector,value);
 }
 
 
@@ -91,6 +101,13 @@ void AJCharacter::MoveRight(float value)
 
 void AJCharacter::PrimaryAttack()
 {
+	//一旦攻击，角色就朝向攻击方向，并延迟2.0f秒
+	GetWorldTimerManager().SetTimer(ViewModDelay,this,&AJCharacter::RotationToMovement,2.0f);
+	GetCharacterMovement()->bOrientRotationToMovement = false;
+	bUseControllerRotationYaw = true;
+
+	
+	//设置在手上发射
 	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
 
 	FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
@@ -100,4 +117,9 @@ void AJCharacter::PrimaryAttack()
 
 	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
 
+}
+
+void AJCharacter::RotationToMovement() {
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	bUseControllerRotationYaw = false;
 }
