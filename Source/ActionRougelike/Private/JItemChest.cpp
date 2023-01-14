@@ -33,7 +33,14 @@ void AJItemChest::Tick(float DeltaTime)
 
 void AJItemChest::Interact_Implementation(APawn* OperaterPawn)
 {
-	//接口内容打开箱子
-	LidMesh->SetRelativeRotation(FRotator(TargetPitch , 0, 0));
+	if (Open) {
+		Open = false; 
+		LidMesh->SetRelativeRotation(FRotator(0, 0, 0));
+	}
+	else {
+		Open = true;
+		LidMesh->SetRelativeRotation(FRotator(TargetPitch, 0, 0));
+	}
+
 }
 

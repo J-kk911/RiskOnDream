@@ -3,7 +3,9 @@
 
 #include "JInteractionComponent.h"
 #include "JGamePlayInterface.h"
+#include "Camera/CameraComponent.h"
 #include "DrawDebugHelpers.h"
+#include "JCharacter.h"
 
 
 // Sets default values for this component's properties
@@ -41,19 +43,26 @@ void UJInteractionComponent::PrimaryInteract()
 {
 
 	FHitResult OutHit;
-	FVector EyeLocation;
+	
 
 	AActor* MyOwner = GetOwner();
 	FRotator EyeRoation;
-	MyOwner->GetActorEyesViewPoint(EyeLocation,EyeRoation);
+	//MyOwner->GetActorEyesViewPoint(EyeLocation,EyeRoation);
 
-	FVector End = EyeLocation + (EyeRoation.Vector()*1000);
+	AJCharacter* MyCharacter = Cast<AJCharacter>(MyOwner);
+	FVector Start = MyCharacter->CameraComp->GetComponentLocation();
+	FRotator StartRotation = MyCharacter->CameraComp->GetComponentRotation();
+
+	FVector End = Start + (StartRotation.Vector()*1500);
 
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(MyOwner);
 
+	//UE_LOG(LogTemp, Warning, TEXT("%s"), *Start.ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("%s"), *End.ToString());
+	// 
 	//射线检测： 检测结果，射线起点，射线终点，检测类型，忽略物体；
-	bool bBlock =  GetWorld()->LineTraceSingleByObjectType(OutHit, EyeLocation, End,ECC_WorldDynamic, Params);
+	bool bBlock =  GetWorld()->LineTraceSingleByObjectType(OutHit, Start, End,ECC_WorldDynamic, Params);
 	
 	AActor* HitActor = OutHit.GetActor();
 	if (HitActor) {
@@ -72,5 +81,5 @@ void UJInteractionComponent::PrimaryInteract()
 	else {
 		LineColor = FColor::Red;
 	}
-	DrawDebugLine(GetWorld(),EyeLocation, End, LineColor,false,2.0f,0,2.0f);
+	DrawDebugLine(GetWorld(), Start, End, LineColor,false,2.0f,0,2.0f);
 }

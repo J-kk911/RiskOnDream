@@ -34,8 +34,6 @@ public:
 	// Sets default values for this character's properties
 	AJCharacter();
 
-protected:
-
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -56,8 +54,6 @@ protected:
 	//actor组件
 	UJInteractionComponent* InteractionComp;
 
-
-	 
 	//向前移动
 	void MoveForward(float value);
 	//向右移动

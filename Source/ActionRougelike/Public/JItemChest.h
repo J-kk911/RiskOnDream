@@ -31,6 +31,9 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* LidMesh;
 
+	UPROPERTY(EditDefaultsOnly)
+	bool Open = false;
+
 	
 public:	
 	// Called every frame

@@ -17,10 +17,13 @@ class ACTIONROUGELIKE_API AJCrossHairHUD : public AHUD
 public:
 	AJCrossHairHUD();
 
-
-	//virtual void DrawHUD() override;
+	virtual void DrawHUD() override;
 
 protected:
-UPROPERTY(EditAnywhere)
-	UTexture2D* CrosshairTex;;
+
+	// Í¼Ïñ×ÊÔ´
+	UPROPERTY(EditDefaultsOnly)
+		UTexture2D* CrosshairTexture;
+
+
 };
