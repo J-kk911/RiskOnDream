@@ -3,6 +3,7 @@
 
 #include "JInteractionComponent.h"
 #include "JGamePlayInterface.h"
+#include "DrawDebugHelpers.h"
 
 
 // Sets default values for this component's properties
@@ -42,26 +43,34 @@ void UJInteractionComponent::PrimaryInteract()
 	FHitResult OutHit;
 	FVector EyeLocation;
 
-	AActor* Myowner = GetOwner();
+	AActor* MyOwner = GetOwner();
 	FRotator EyeRoation;
-	Myowner->GetActorEyesViewPoint(EyeLocation,EyeRoation);
+	MyOwner->GetActorEyesViewPoint(EyeLocation,EyeRoation);
 
 	FVector End = EyeLocation + (EyeRoation.Vector()*1000);
 
 	FCollisionQueryParams Params;
-	Params.AddIgnoredActor(Myowner);
+	Params.AddIgnoredActor(MyOwner);
 
-	//射线检测： 检测结果，射线起点，射线终点，检测物体，忽略物体；
-	GetWorld()->LineTraceSingleByChannel(OutHit, EyeLocation, End, ECC_WorldStatic, Params);
-
+	//射线检测： 检测结果，射线起点，射线终点，检测类型，忽略物体；
+	bool bBlock =  GetWorld()->LineTraceSingleByObjectType(OutHit, EyeLocation, End,ECC_WorldStatic, Params);
+	
 	AActor* HitActor = OutHit.GetActor();
 	if (HitActor) {
 		//如果这个目标继承自互动接口
 		if (HitActor->Implements<UJGamePlayInterface>()) 
 		{
-			APawn* MyPawn = Cast<APawn>(Myowner);
+			APawn* MyPawn = Cast<APawn>(MyOwner);
 			IJGamePlayInterface::Execute_Interact(HitActor,MyPawn);
 		}
 	}
 
+	FColor LineColor;
+	if (bBlock) {
+		LineColor = FColor::Green;
+	}
+	else {
+		LineColor = FColor::Red;
+	}
+	DrawDebugLine(GetWorld(),EyeLocation, End, LineColor,false,2.0f,0,2.0f);
 }

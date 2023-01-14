@@ -114,7 +114,12 @@ void AJCharacter::PrimaryAttack()
 	bUseControllerRotationYaw = true;
 	//SetActorRotation()加上延迟
 
-	
+	PlayAnimMontage(AttackAnim);
+	//延迟播放动画
+	GetWorldTimerManager().SetTimer(AttackDelay, this, &AJCharacter::PrimaryAttackDelay, TimeToHandUp);
+
+}
+void AJCharacter::PrimaryAttackDelay(){
 	//设置在手上发射
 	FVector HandLocation = GetMesh()->GetSocketLocation("ik_hand_r");
 
@@ -124,7 +129,6 @@ void AJCharacter::PrimaryAttack()
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
-
 }
 
 void AJCharacter::RotationToMovement() {
