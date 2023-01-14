@@ -53,7 +53,7 @@ void UJInteractionComponent::PrimaryInteract()
 	Params.AddIgnoredActor(MyOwner);
 
 	//射线检测： 检测结果，射线起点，射线终点，检测类型，忽略物体；
-	bool bBlock =  GetWorld()->LineTraceSingleByObjectType(OutHit, EyeLocation, End,ECC_WorldStatic, Params);
+	bool bBlock =  GetWorld()->LineTraceSingleByObjectType(OutHit, EyeLocation, End,ECC_WorldDynamic, Params);
 	
 	AActor* HitActor = OutHit.GetActor();
 	if (HitActor) {

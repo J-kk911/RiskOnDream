@@ -3,9 +3,9 @@
 using UnrealBuildTool;
 using System.Collections.Generic;
 
-public class ActionRougelikeTarget : TargetRules
+public class RiskOnDreamTarget : TargetRules
 {
-	public ActionRougelikeTarget( TargetInfo Target) : base(Target)
+	public RiskOnDreamTarget( TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Game;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
