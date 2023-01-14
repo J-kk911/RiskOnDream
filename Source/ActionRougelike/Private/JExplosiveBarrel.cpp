@@ -2,6 +2,8 @@
 
 
 #include "JExplosiveBarrel.h"
+#include "JMagicProjectile.h"
+
 
 // Sets default values
 AJExplosiveBarrel::AJExplosiveBarrel()
@@ -39,6 +41,9 @@ void AJExplosiveBarrel::OnActorHit(UPrimitiveComponent* HitComponent, AActor* Ot
 		RadialForceComp->FireImpulse();
 		GetWorld()->DestroyActor(this);
 	}
+	//if (OtherActor->Implements<AJMagicProjectile>()) {
+	//	UE_LOG(LogTemp, Log, TEXT("right"));
+	//}
 
 
 }

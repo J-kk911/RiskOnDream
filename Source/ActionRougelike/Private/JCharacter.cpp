@@ -2,6 +2,9 @@
 
 
 #include "JCharacter.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
+#include "JInteractionComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "JMagicProjectile.h"
@@ -20,6 +23,7 @@ AJCharacter::AJCharacter()
 	CameraComp = CreateDefaultSubobject <UCameraComponent>("CameraComp");
 	CameraComp->SetupAttachment(SpringArmComp);
 
+	InteractionComp = CreateDefaultSubobject<UJInteractionComponent>("InteractionComp");
 	
 	//使用 Controller 控制摄像机臂旋转
 	SpringArmComp->bUsePawnControlRotation = true;
@@ -41,6 +45,8 @@ void AJCharacter::BeginPlay()
 	Super::BeginPlay();
 	
 }
+
+
 
 
 
@@ -70,7 +76,8 @@ void AJCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 	//操作
 	PlayerInputComponent->BindAction("PrimaryAttack",IE_Pressed,this,&AJCharacter::PrimaryAttack);
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AJCharacter::Jump);
+	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &AJCharacter::PrimaryInteract);
 }
 
 
@@ -105,6 +112,7 @@ void AJCharacter::PrimaryAttack()
 	GetWorldTimerManager().SetTimer(ViewModDelay,this,&AJCharacter::RotationToMovement,1.0f);
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 	bUseControllerRotationYaw = true;
+	//SetActorRotation()加上延迟
 
 	
 	//设置在手上发射
@@ -123,4 +131,9 @@ void AJCharacter::RotationToMovement() {
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	bUseControllerRotationYaw = false;
 	GetWorldTimerManager().ClearTimer(ViewModDelay);
+}
+
+void AJCharacter::PrimaryInteract()
+{
+	InteractionComp->PrimaryInteract();
 }

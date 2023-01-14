@@ -3,12 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/SpringArmComponent.h"
-#include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
 #include "JCharacter.generated.h"
 
-
+class UCameraComponent;
+class USpringArmComponent;
+class UJInteractionComponent;
 
 UCLASS()
 class ACTIONROUGELIKE_API AJCharacter : public ACharacter
@@ -43,17 +43,19 @@ protected:
 	void MoveRight(float value);
 	//初级攻击
 	void PrimaryAttack();
+	//恢复正常视野
+	void RotationToMovement();
+	//交互
+	void PrimaryInteract();
 
 	//控制视野转动handle
 	FTimerHandle ViewModDelay;
 
-	//
-	FTimerHandle RotationTime;
+	//actor组件
+	UJInteractionComponent* InteractionComp;
 
-	//恢复正常视野
-	void RotationToMovement();
 
-	void RotationTimeEnd();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

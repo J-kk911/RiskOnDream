@@ -11,10 +11,15 @@ UCLASS()
 class ACTIONROUGELIKE_API AJItemChest : public AActor, public IJGamePlayInterface
 {
 	GENERATED_BODY()
-	
+	//实现接口
+	void Interact_Implementation(APawn* OperaterPawn) override;
+
 public:	
 	// Sets default values for this actor's properties
 	AJItemChest();
+
+	UPROPERTY(EditAnywhere)
+	float TargetPitch;
 
 protected:
 	// Called when the game starts or when spawned
@@ -32,6 +37,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
-	void Interact_Implementation(APawn* OperaterPawn);
+	
 
 };

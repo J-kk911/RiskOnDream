@@ -15,7 +15,12 @@ class ACTIONROUGELIKE_API AJCrossHairHUD : public AHUD
 	GENERATED_BODY()
 	
 public:
+	AJCrossHairHUD();
+
+
+	//virtual void DrawHUD() override;
 
 protected:
-
+UPROPERTY(EditAnywhere)
+	UTexture2D* CrosshairTex;;
 };

@@ -13,6 +13,8 @@ AJItemChest::AJItemChest()
 
 	LidMesh = CreateDefaultSubobject<UStaticMeshComponent>("LidMesh");
 	LidMesh->SetupAttachment(BaseMesh);
+
+	TargetPitch = 110;
 }
 
 // Called when the game starts or when spawned
@@ -31,6 +33,7 @@ void AJItemChest::Tick(float DeltaTime)
 
 void AJItemChest::Interact_Implementation(APawn* OperaterPawn)
 {
-	LidMesh->SetRelativeRotation(FRotator(110,0,0));
+	//接口内容打开箱子
+	LidMesh->SetRelativeRotation(FRotator(TargetPitch , 0, 0));
 }
 

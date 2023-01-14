@@ -26,4 +26,6 @@ public:
 	//»¥¶¯½Ó¿Ú
 	UFUNCTION(BlueprintNativeEvent)
 	void Interact(APawn* OperaterPawn);
+
+
 };
