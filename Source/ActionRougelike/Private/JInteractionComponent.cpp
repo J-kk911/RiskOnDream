@@ -74,12 +74,12 @@ void UJInteractionComponent::PrimaryInteract()
 		}
 	}
 
-	FColor LineColor;
-	if (bBlock) {
-		LineColor = FColor::Green;
-	}
-	else {
-		LineColor = FColor::Red;
-	}
-	DrawDebugLine(GetWorld(), Start, End, LineColor,false,2.0f,0,2.0f);
+	//FColor LineColor;
+	//if (bBlock) {
+	//	LineColor = FColor::Green;
+	//}
+	//else {
+	//	LineColor = FColor::Red;
+	//}
+	//DrawDebugLine(GetWorld(), Start, End, LineColor,false,2.0f,0,2.0f);
 }

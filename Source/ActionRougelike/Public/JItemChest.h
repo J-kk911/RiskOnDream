@@ -5,7 +5,10 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "JGamePlayInterface.h"
+#include "Components/TimelineComponent.h"
 #include "JItemChest.generated.h"
+
+
 
 UCLASS()
 class ACTIONROUGELIKE_API AJItemChest : public AActor, public IJGamePlayInterface
@@ -18,8 +21,19 @@ public:
 	// Sets default values for this actor's properties
 	AJItemChest();
 
-	UPROPERTY(EditAnywhere)
-	float TargetPitch;
+	UPROPERTY(EditDefaultsOnly)
+	UTimelineComponent* OpenTimeline;
+
+	// 声明曲线对象,要在蓝图里
+	UPROPERTY(EditDefaultsOnly)
+	UCurveFloat* Curver;
+
+public:
+	UFUNCTION()
+		void OnTimelineTick(float Output);	// Timeline 更新时调用
+
+	UFUNCTION()
+		void SetState();
 
 protected:
 	// Called when the game starts or when spawned

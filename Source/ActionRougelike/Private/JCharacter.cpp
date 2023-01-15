@@ -123,7 +123,31 @@ void AJCharacter::PrimaryAttackDelay(){
 	//设置在手上发射
 	FVector HandLocation = GetMesh()->GetSocketLocation("ik_hand_r");
 
-	FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
+	//射线检测
+	FHitResult OutHit;
+	FVector Start = CameraComp->GetComponentLocation();
+	FRotator StartRotation = CameraComp->GetComponentRotation();
+	FVector End = Start + (StartRotation.Vector() * 100000);
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+
+	//UE_LOG(LogTemp, Warning, TEXT("%s"), *Start.ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("%s"), *End.ToString());
+	// 
+	//射线检测： 检测结果，射线起点，射线终点，射线类型，忽略物体；
+	bool bBlock = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_WorldDynamic, Params);
+
+	FRotator TargetRotation;
+	if (bBlock) {
+		TargetRotation = UKismetMathLibrary::FindLookAtRotation(HandLocation, OutHit.Location);
+		//UE_LOG(LogTemp, Warning, TEXT("FIND:%s"), *OutHit.Location.ToString());
+	}else{
+		TargetRotation = UKismetMathLibrary::FindLookAtRotation(HandLocation, End);
+		//UE_LOG(LogTemp, Warning, TEXT("NOT FIND:%s"), *End.ToString());
+		
+	}
+
+	FTransform SpawnTM = FTransform(TargetRotation, HandLocation);
 
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;

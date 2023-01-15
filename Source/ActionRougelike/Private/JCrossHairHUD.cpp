@@ -25,7 +25,8 @@ void AJCrossHairHUD::DrawHUD()
 
 		// 在中心点绘制十字准星。
 		FCanvasTileItem TileItem(CrossHairDrawPosition, CrosshairTexture->Resource, FLinearColor::Blue);
-		TileItem.BlendMode = SE_BLEND_Translucent;
+		TileItem.BlendMode = SE_BLEND_TranslucentAlphaOnly;
+
 		Canvas->DrawItem(TileItem);
 	}
 }

@@ -14,14 +14,34 @@ AJItemChest::AJItemChest()
 	LidMesh = CreateDefaultSubobject<UStaticMeshComponent>("LidMesh");
 	LidMesh->SetupAttachment(BaseMesh);
 
-	TargetPitch = 110;
+	OpenTimeline = CreateDefaultSubobject<UTimelineComponent>("OpenTimeline");
+
 }
 
 // Called when the game starts or when spawned
 void AJItemChest::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	//这部分不能在构造函数里，因为curve还没绑定
+	if (Curver) {
+		/*
+		* 函数分别绑定在两个变量上再传到Timeline中，注意参数类型
+		* 一个是过程中
+		* 一个是结束时候触发
+		*/
+
+		FOnTimelineFloat OnTimelineFloatEvent;
+		FOnTimelineEvent OnTimelineFinishedEvent;
+
+		OnTimelineFloatEvent.BindUFunction(this, TEXT("OnTimelineTick"));
+		OnTimelineFinishedEvent.BindUFunction(this, TEXT("SetState"));
+
+		OpenTimeline->AddInterpFloat(Curver, OnTimelineFloatEvent);
+		OpenTimeline->SetTimelineLength(ETimelineLengthMode::TL_LastKeyFrame);
+		OpenTimeline->SetTimelineFinishedFunc(OnTimelineFinishedEvent);
+	}
+
 }
 
 // Called every frame
@@ -33,14 +53,24 @@ void AJItemChest::Tick(float DeltaTime)
 
 void AJItemChest::Interact_Implementation(APawn* OperaterPawn)
 {
-	if (Open) {
-		Open = false; 
-		LidMesh->SetRelativeRotation(FRotator(0, 0, 0));
+	if (!OpenTimeline->IsPlaying()) {
+		if (Open) {
+			OpenTimeline->ReverseFromEnd();
+		}else{
+			OpenTimeline->PlayFromStart();
+		}
 	}
-	else {
-		Open = true;
-		LidMesh->SetRelativeRotation(FRotator(TargetPitch, 0, 0));
-	}
+}
+
+void AJItemChest::OnTimelineTick(float Output)
+{
+	//UE_LOG(LogTemp, Warning, TEXT("output:%f"), Output);
+	LidMesh->SetRelativeRotation(FRotator(Output, 0, 0));
 
 }
 
+void AJItemChest::SetState() {
+	//UE_LOG(LogTemp, Warning, TEXT("END"));
+	Open = !Open;
+
+}
