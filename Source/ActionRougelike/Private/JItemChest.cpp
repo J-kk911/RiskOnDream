@@ -22,14 +22,10 @@ AJItemChest::AJItemChest()
 	FRichCurve RichCurve;
 	FKeyHandle KeyHandle;
 
-	//ÉèÎªÆ½»¬
 	KeyHandle = RichCurve.AddKey(0, 0);
-	Curver->FloatCurve.SetKeyInterpMode(KeyHandle, ERichCurveInterpMode::RCIM_Cubic);
 	KeyHandle = RichCurve.AddKey(0.5, 110);
-	Curver->FloatCurve.SetKeyInterpMode(KeyHandle, ERichCurveInterpMode::RCIM_Cubic);
 
 	Curver->FloatCurve = RichCurve;
-
 }
 
 // Called when the game starts or when spawned
