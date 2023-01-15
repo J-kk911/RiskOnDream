@@ -16,6 +16,20 @@ AJItemChest::AJItemChest()
 
 	OpenTimeline = CreateDefaultSubobject<UTimelineComponent>("OpenTimeline");
 
+	Curver = CreateDefaultSubobject<UCurveFloat>("Curver");
+
+	//设置这条曲线
+	FRichCurve RichCurve;
+	FKeyHandle KeyHandle;
+
+	//设为平滑
+	KeyHandle = RichCurve.AddKey(0, 0);
+	Curver->FloatCurve.SetKeyInterpMode(KeyHandle, ERichCurveInterpMode::RCIM_Cubic);
+	KeyHandle = RichCurve.AddKey(0.5, 110);
+	Curver->FloatCurve.SetKeyInterpMode(KeyHandle, ERichCurveInterpMode::RCIM_Cubic);
+
+	Curver->FloatCurve = RichCurve;
+
 }
 
 // Called when the game starts or when spawned
@@ -26,20 +40,21 @@ void AJItemChest::BeginPlay()
 	//这部分不能在构造函数里，因为curve还没绑定
 	if (Curver) {
 		/*
-		* 函数分别绑定在两个变量上再传到Timeline中，注意参数类型
+		* 函数分别通过TEXT绑定在两个变量上再传到Timeline中，注意参数类型
 		* 一个是过程中
 		* 一个是结束时候触发
 		*/
-
 		FOnTimelineFloat OnTimelineFloatEvent;
 		FOnTimelineEvent OnTimelineFinishedEvent;
 
 		OnTimelineFloatEvent.BindUFunction(this, TEXT("OnTimelineTick"));
-		OnTimelineFinishedEvent.BindUFunction(this, TEXT("SetState"));
+		//OnTimelineFinishedEvent.BindUFunction(this, TEXT("SetState"));
 
 		OpenTimeline->AddInterpFloat(Curver, OnTimelineFloatEvent);
+		//OpenTimeline->SetTimelineFinishedFunc(OnTimelineFinishedEvent);
+
+		//设置结束时间为最后一个关键帧
 		OpenTimeline->SetTimelineLength(ETimelineLengthMode::TL_LastKeyFrame);
-		OpenTimeline->SetTimelineFinishedFunc(OnTimelineFinishedEvent);
 	}
 
 }
@@ -59,6 +74,7 @@ void AJItemChest::Interact_Implementation(APawn* OperaterPawn)
 		}else{
 			OpenTimeline->PlayFromStart();
 		}
+		Open = !Open;
 	}
 }
 
@@ -69,8 +85,3 @@ void AJItemChest::OnTimelineTick(float Output)
 
 }
 
-void AJItemChest::SetState() {
-	//UE_LOG(LogTemp, Warning, TEXT("END"));
-	Open = !Open;
-
-}

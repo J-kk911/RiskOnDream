@@ -21,20 +21,6 @@ public:
 	// Sets default values for this actor's properties
 	AJItemChest();
 
-	UPROPERTY(EditDefaultsOnly)
-	UTimelineComponent* OpenTimeline;
-
-	// 声明曲线对象,要在蓝图里
-	UPROPERTY(EditDefaultsOnly)
-	UCurveFloat* Curver;
-
-public:
-	UFUNCTION()
-		void OnTimelineTick(float Output);	// Timeline 更新时调用
-
-	UFUNCTION()
-		void SetState();
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -46,6 +32,13 @@ protected:
 	UStaticMeshComponent* LidMesh;
 
 	UPROPERTY(EditDefaultsOnly)
+		UTimelineComponent* OpenTimeline;
+
+	// 声明曲线对象,要在蓝图里
+	UPROPERTY(EditDefaultsOnly)
+		UCurveFloat* Curver;
+
+	UPROPERTY(EditDefaultsOnly)
 	bool Open = false;
 
 	
@@ -53,7 +46,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-public:
+	UFUNCTION()
+		void OnTimelineTick(float Output);	// Timeline 更新时调用
+
 	
 
 };
