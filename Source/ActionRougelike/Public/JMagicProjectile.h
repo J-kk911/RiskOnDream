@@ -34,26 +34,25 @@ protected:
 	//粒子特效组件
 	UPROPERTY(VisibleAnywhere)
 	UParticleSystemComponent* EffectComp;
-
-	//是否被打击
-	UPROPERTY(VisibleAnywhere)
-	uint8 IsHit:1;
 	
 	//等待销毁时间
 	UPROPERTY(VisibleAnywhere)
-	uint64 WaitTick; 
+	uint64 WaitTime = 0.5; 
+
+	//延迟销毁
+	FTimerHandle TimeToDestroy;
 
 	//声音特效
 	UPROPERTY(VisibleAnywhere)
 	UAudioComponent* AudioComp;
 
-	//检测销毁
-	UFUNCTION()
-	void DestroyCheck();
 
 	//被打击
 	UFUNCTION()
 	void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	//销毁
+	void Destroy();
 
 public:	
 	// Called every frame

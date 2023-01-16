@@ -44,9 +44,6 @@ AJMagicProjectile::AJMagicProjectile()
 	AudioComp->bOverrideAttenuation = true;
 	//AudioComp->SetAutoActivate(false);
 
-	IsHit = false;
-	WaitTick = 30;
-
 	//不模拟物理
 	SphereComp->SetSimulatePhysics(false);
 	
@@ -56,27 +53,21 @@ AJMagicProjectile::AJMagicProjectile()
 void AJMagicProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	SphereComp->IgnoreActorWhenMoving(GetInstigator(), true);
+	//UE_LOG(LogTemp, Warning, TEXT("%s"), *GetInstigator()->GetName());
 }
 
 // Called every frame
 void AJMagicProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	DestroyCheck();
+
 }
 
-void AJMagicProjectile::DestroyCheck()
-{
-	if (IsHit) {
-		WaitTick--;
-		if (WaitTick == 0) {
-			GetWorld()->DestroyActor(this);
-		}
-	}
-}
 
 void AJMagicProjectile::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) {
+
 	USoundBase* sb = LoadObject<USoundBase>(nullptr,TEXT("/Game/ExampleContent/Audio/Abilities/A_Ability_MeteorImpact01.A_Ability_MeteorImpact01"));
 	AudioComp->SetSound(sb);
 	AudioComp->Play(); 
@@ -85,5 +76,11 @@ void AJMagicProjectile::OnActorHit(UPrimitiveComponent* HitComponent, AActor* Ot
 	UParticleSystem* ps = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/ParagonGideon/FX/Particles/Gideon/Abilities/Primary/FX/P_Gideon_Primary_HitWorld.P_Gideon_Primary_HitWorld"));
 	EffectComp->SetTemplate(ps);
 
-	IsHit = true;
+	GetWorldTimerManager().SetTimer(TimeToDestroy,this, &AJMagicProjectile::Destroy,WaitTime);
+
+}
+
+void AJMagicProjectile::Destroy()
+{
+	GetWorld()->DestroyActor(this);
 }

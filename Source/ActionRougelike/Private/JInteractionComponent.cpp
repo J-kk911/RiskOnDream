@@ -49,14 +49,15 @@ void UJInteractionComponent::PrimaryInteract()
 	FRotator EyeRoation;
 	//MyOwner->GetActorEyesViewPoint(EyeLocation,EyeRoation);
 
-	AJCharacter* MyCharacter = Cast<AJCharacter>(MyOwner);
-	FVector Start = MyCharacter->CameraComp->GetComponentLocation();
-	FRotator StartRotation = MyCharacter->CameraComp->GetComponentRotation();
+	FMinimalViewInfo OutResult;
+	MyOwner->CalcCamera(GetWorld()->TimeSeconds,OutResult);
+
+	FVector Start = OutResult.Location;;
+	FRotator StartRotation = OutResult.Rotation;
 
 	FVector End = Start + (StartRotation.Vector()*1500);
 
 	FCollisionQueryParams Params;
-	Params.AddIgnoredActor(MyOwner);
 
 	//UE_LOG(LogTemp, Warning, TEXT("%s"), *Start.ToString());
 	//UE_LOG(LogTemp, Warning, TEXT("%s"), *End.ToString());
