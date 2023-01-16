@@ -2,6 +2,7 @@
 
 
 #include "JMagicProjectile.h"
+#include "DrawDebugHelpers.h"
 
 // Sets default values
 AJMagicProjectile::AJMagicProjectile()
@@ -34,11 +35,9 @@ AJMagicProjectile::AJMagicProjectile()
 	//依附于球碰撞体
 	EffectComp->SetupAttachment(SphereComp);
 
-	//被撞击时触发
-	SphereComp->OnComponentHit.AddDynamic(this,&AJMagicProjectile::OnActorHit);
-
 	//声音组件
 	AudioComp = CreateDefaultSubobject<UAudioComponent>("AudioComp");
+	AudioComp->SetupAttachment(RootComponent);
 
 	//根据距离衰减
 	AudioComp->bOverrideAttenuation = true;
@@ -47,6 +46,7 @@ AJMagicProjectile::AJMagicProjectile()
 	//不模拟物理
 	SphereComp->SetSimulatePhysics(false);
 	
+
 }
 
 // Called when the game starts or when spawned
@@ -54,8 +54,9 @@ void AJMagicProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//设置撞击
 	SphereComp->IgnoreActorWhenMoving(GetInstigator(), true);
-	//UE_LOG(LogTemp, Warning, TEXT("%s"), *GetInstigator()->GetName());
+	SphereComp->OnComponentHit.AddDynamic(this, &AJMagicProjectile::OnActorHit);
 }
 
 // Called every frame
@@ -68,13 +69,21 @@ void AJMagicProjectile::Tick(float DeltaTime)
 
 void AJMagicProjectile::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) {
 
-	USoundBase* sb = LoadObject<USoundBase>(nullptr,TEXT("/Game/ExampleContent/Audio/Abilities/A_Ability_MeteorImpact01.A_Ability_MeteorImpact01"));
-	AudioComp->SetSound(sb);
+	//debug
+	//FString CombineString = FString::Printf(TEXT("%s"), *OtherActor->GetName());
+	//DrawDebugString(GetWorld(), Hit.Location, CombineString, NULL, FColor::Blue, true);
+
+	if (GetInstigator() == OtherActor) {
+		return;
+	}
+
+	//动态加载资源
+	USoundBase* SoundBase = LoadObject<USoundBase>(nullptr,TEXT("/Game/ExampleContent/Audio/Abilities/A_Ability_MeteorImpact01.A_Ability_MeteorImpact01"));
+	AudioComp->SetSound(SoundBase);
 	AudioComp->Play(); 
 		
-	//动态加载资源
-	UParticleSystem* ps = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/ParagonGideon/FX/Particles/Gideon/Abilities/Primary/FX/P_Gideon_Primary_HitWorld.P_Gideon_Primary_HitWorld"));
-	EffectComp->SetTemplate(ps);
+	UParticleSystem* ParticleSystem = LoadObject<UParticleSystem>(nullptr, TEXT("/Game/ParagonGideon/FX/Particles/Gideon/Abilities/Primary/FX/P_Gideon_Primary_HitWorld.P_Gideon_Primary_HitWorld"));
+	EffectComp->SetTemplate(ParticleSystem);
 
 	GetWorldTimerManager().SetTimer(TimeToDestroy,this, &AJMagicProjectile::Destroy,WaitTime);
 

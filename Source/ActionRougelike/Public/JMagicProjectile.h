@@ -37,7 +37,7 @@ protected:
 	
 	//等待销毁时间
 	UPROPERTY(VisibleAnywhere)
-	uint64 WaitTime = 0.5; 
+	float WaitTime = 0.5; 
 
 	//延迟销毁
 	FTimerHandle TimeToDestroy;
@@ -58,5 +58,5 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-
+	
 };

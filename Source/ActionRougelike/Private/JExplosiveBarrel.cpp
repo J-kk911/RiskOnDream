@@ -22,11 +22,18 @@ AJExplosiveBarrel::AJExplosiveBarrel()
 	RadialForceComp->AddCollisionChannelToAffect(ECC_WorldDynamic);
 	RadialForceComp->SetAutoActivate(false);
 	RadialForceComp->Radius = 750.0f;
-	//强度
-	RadialForceComp->ImpulseStrength = 100000.0f;
+	//强度,忽略物理性质
+	RadialForceComp->ImpulseStrength = 1000.0f;
+	RadialForceComp->bImpulseVelChange = true;
 
 	//shift+alt+s 搜索用法
 	MeshComp->OnComponentHit.AddDynamic(this, &AJExplosiveBarrel::OnActorHit);
+
+	AudioComp = CreateDefaultSubobject<UAudioComponent>("AudioComp");
+	AudioComp->SetupAttachment(RootComponent);
+
+	EffectComp = CreateDefaultSubobject<UParticleSystemComponent>("EffectComp");
+	EffectComp->SetupAttachment(RootComponent);
 
 }
 
@@ -35,15 +42,21 @@ void AJExplosiveBarrel::OnActorHit(UPrimitiveComponent* HitComponent, AActor* Ot
 {
 	UE_LOG(LogTemp, Log, TEXT("Get a Hit!"));
 	UE_LOG(LogTemp, Log, TEXT("%s"), *OtherActor->GetClass()->GetName());
-;
+
 	FString Target = "MagicProjectileBP_C";
 	if (OtherActor->GetClass()->GetName() == Target) {
 		RadialForceComp->FireImpulse();
-		GetWorld()->DestroyActor(this);
+		GetWorldTimerManager().SetTimer(DestroyTimeHandle,this,&AJExplosiveBarrel::Destroy,1.0f,false);
 	}
+
 	//if (OtherActor->Implements<AJMagicProjectile>()) {
 	//	UE_LOG(LogTemp, Log, TEXT("right"));
 	//}
 
-
 }
+
+void AJExplosiveBarrel::Destroy()
+{
+	GetWorld()->DestroyActor(this);
+}
+

@@ -22,9 +22,23 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* MeshComp;
 
-	//爆炸 组件
+	//冲击波 组件
 	UPROPERTY(VisibleAnywhere)
 	URadialForceComponent* RadialForceComp;
+
+	//例子特效
+	UPROPERTY(EditDefaultsOnly)
+	UParticleSystemComponent* EffectComp;
+
+	//音效
+	UPROPERTY(EditDefaultsOnly)
+	UAudioComponent* AudioComp;
+
+	UPROPERTY(VisibleAnywhere)
+	FTimerHandle DestroyTimeHandle;
+
+	UFUNCTION()
+	void Destroy();
 
 	UFUNCTION()
 	void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);

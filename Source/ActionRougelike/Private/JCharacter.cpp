@@ -115,11 +115,12 @@ void AJCharacter::PrimaryAttack()
 	//SetActorRotation()加上延迟
 
 	PlayAnimMontage(AttackAnim);
-	//延迟播放动画
+	//子弹等待动画
 	GetWorldTimerManager().SetTimer(AttackDelay, this, &AJCharacter::PrimaryAttackDelay, TimeToHandUp);
 
 }
 void AJCharacter::PrimaryAttackDelay(){
+
 	//设置在手上发射
 	FVector HandLocation = GetMesh()->GetSocketLocation("ik_hand_r");
 
@@ -144,8 +145,8 @@ void AJCharacter::PrimaryAttackDelay(){
 	}else{
 		TargetRotation = UKismetMathLibrary::FindLookAtRotation(HandLocation, End);
 		//UE_LOG(LogTemp, Warning, TEXT("NOT FIND:%s"), *End.ToString());
-		
 	}
+	HandLocation = HandLocation + TargetRotation.Vector() * 30;
 
 	FTransform SpawnTM = FTransform(TargetRotation, HandLocation);
 
@@ -153,7 +154,10 @@ void AJCharacter::PrimaryAttackDelay(){
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParams.Instigator = this;
 
-	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
+	AActor* SpawnActor =  GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
+
+	Super::MoveIgnoreActorAdd(SpawnActor);
+
 }
 
 void AJCharacter::RotationToMovement() {
