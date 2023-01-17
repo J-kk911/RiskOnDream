@@ -27,11 +27,11 @@ protected:
 	URadialForceComponent* RadialForceComp;
 
 	//例子特效
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(VisibleAnywhere)
 	UParticleSystemComponent* EffectComp;
 
 	//音效
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(VisibleAnywhere)
 	UAudioComponent* AudioComp;
 
 	UPROPERTY(VisibleAnywhere)
