@@ -24,6 +24,7 @@ AJBaseProjectile::AJBaseProjectile()
 	MovementComp->InitialSpeed = 1000.0F;
 	MovementComp->bRotationFollowsVelocity = true;
 	MovementComp->bInitialVelocityInLocalSpace = true;
+	MovementComp->ProjectileGravityScale = 0;
 
 	//Particle
 	ParticleStartComp = CreateDefaultSubobject<UParticleSystemComponent>("ParticleStartComp");
@@ -69,11 +70,11 @@ void AJBaseProjectile::Tick(float DeltaTime)
 
 void AJBaseProjectile::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	ParticleFlyComp->Activate(false);
-	ParticleEndComp->Activate(true);
+	ParticleFlyComp->SetActive(false);
+	ParticleEndComp->SetActive(true);
 
-	AudioFlyComp->Activate(false);
-	AudioEndComp->Activate(true);
+	AudioFlyComp->SetActive(false);
+	AudioEndComp->SetActive(true);
 
 	GetWorldTimerManager().SetTimer(DestroyTimeHandle, this, &AJBaseProjectile::Destroy, TimeToDestroy);
 	

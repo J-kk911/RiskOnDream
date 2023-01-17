@@ -47,9 +47,6 @@ void AJCharacter::BeginPlay()
 }
 
 
-
-
-
 // Called every frame
 void AJCharacter::Tick(float DeltaTime)
 {
@@ -75,7 +72,8 @@ void AJCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 
 	//操作
-	PlayerInputComponent->BindAction("PrimaryAttack",IE_Pressed,this,&AJCharacter::PrimaryAttack);
+	PlayerInputComponent->BindAction("MagiskProjectil",IE_Pressed,this,&AJCharacter::MagiskProjectileAttack);
+	PlayerInputComponent->BindAction("BlackholeProjectile", IE_Pressed, this, &AJCharacter::BlackholeProjectileAttack);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AJCharacter::Jump);
 	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &AJCharacter::PrimaryInteract);
 }
@@ -106,20 +104,39 @@ void AJCharacter::MoveRight(float value)
 
 
 
-void AJCharacter::PrimaryAttack()
+void AJCharacter::MagiskProjectileAttack()
 {
 	//一旦攻击，角色就朝向攻击方向，并延迟1.0f秒
 	GetWorldTimerManager().SetTimer(ViewModDelay,this,&AJCharacter::RotationToMovement,1.0f);
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 	bUseControllerRotationYaw = true;
-	//SetActorRotation()加上延迟
 
 	PlayAnimMontage(AttackAnim);
+	FTimerDelegate TimerDel;
+	TimerDel.BindUObject(this, &AJCharacter::SendProjectile, MagiskProjectileClass);
+
 	//子弹等待动画
-	GetWorldTimerManager().SetTimer(AttackDelay, this, &AJCharacter::PrimaryAttackDelay, TimeToHandUp);
+	GetWorldTimerManager().SetTimer(AttackDelay, TimerDel, TimeToHandUp,false);
 
 }
-void AJCharacter::PrimaryAttackDelay(){
+
+void AJCharacter::BlackholeProjectileAttack()
+{
+	//一旦攻击，角色就朝向攻击方向，并延迟1.0f秒
+	GetWorldTimerManager().SetTimer(ViewModDelay, this, &AJCharacter::RotationToMovement, 1.0f);
+	GetCharacterMovement()->bOrientRotationToMovement = false;
+	bUseControllerRotationYaw = true;
+
+	PlayAnimMontage(AttackAnim);
+	FTimerDelegate TimerDel;
+	TimerDel.BindUObject(this, &AJCharacter::SendProjectile, BlackholeProjectileClass);
+
+	//子弹等待动画
+	GetWorldTimerManager().SetTimer(AttackDelay, TimerDel, TimeToHandUp, false);
+
+}
+
+void AJCharacter::SendProjectile(TSubclassOf<AActor> ProjectileClass){
 
 	//设置在手上发射
 	FVector HandLocation = GetMesh()->GetSocketLocation("ik_hand_r");

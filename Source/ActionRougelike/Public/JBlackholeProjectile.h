@@ -3,31 +3,34 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
-#include "Components/SphereComponent.h"
-#include "GameFramework/ProjectileMovementComponent.h"
-#include "Particles/ParticleSystemComponent.h"
 #include "JBaseProjectile.h"
-#include "JMagicProjectile.generated.h"
+#include "PhysicsEngine/RadialForceComponent.h"
+#include "JBlackholeProjectile.generated.h"
 
+/**
+ * 
+ */
 UCLASS()
-class ACTIONROUGELIKE_API AJMagicProjectile : public AJBaseProjectile
+class ACTIONROUGELIKE_API AJBlackholeProjectile : public AJBaseProjectile
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
-	AJMagicProjectile();
+	AJBlackholeProjectile();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	//³å»÷²¨×é¼þ
+	UPROPERTY(VisibleAnywhere)
+		URadialForceComponent* RadialForceComp;
 
-public:	
+	
+
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-
-	
 };

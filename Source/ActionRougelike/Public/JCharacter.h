@@ -18,9 +18,13 @@ class ACTIONROUGELIKE_API AJCharacter : public ACharacter
 
 protected:
 
-	//在蓝图中手动设置一个类的实例，子弹
+	//在蓝图中手动设置一个类的实例，魔法子弹
 	UPROPERTY(EditAnywhere, Category = "Attack")
-	TSubclassOf<AActor> ProjectileClass;
+	TSubclassOf<AActor> MagiskProjectileClass;
+
+	//在蓝图中手动设置一个类的实例，黑洞子弹
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	TSubclassOf<AActor> BlackholeProjectileClass;
 
 	//播放动画
 	UPROPERTY(EditAnywhere, Category = "Attack")
@@ -58,10 +62,12 @@ public:
 	void MoveForward(float value);
 	//向右移动
 	void MoveRight(float value);
-	//初级攻击
-	void PrimaryAttack();
-	//抬手延迟
-	void PrimaryAttackDelay();
+	//魔法攻击
+	void MagiskProjectileAttack();
+	//黑洞攻击
+	void BlackholeProjectileAttack();
+	//发射子弹
+	void SendProjectile(TSubclassOf<AActor>);
 	//恢复正常视野
 	void RotationToMovement();
 	//交互
