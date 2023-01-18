@@ -27,8 +27,6 @@ AJBaseProjectile::AJBaseProjectile()
 	MovementComp->ProjectileGravityScale = 0;
 
 	//Particle
-	ParticleStartComp = CreateDefaultSubobject<UParticleSystemComponent>("ParticleStartComp");
-	ParticleStartComp->SetupAttachment(RootComponent);
 	ParticleFlyComp = CreateDefaultSubobject<UParticleSystemComponent>("ParticleFlyComp");
 	ParticleFlyComp->SetupAttachment(RootComponent);
 	ParticleEndComp = CreateDefaultSubobject<UParticleSystemComponent>("ParticleEndComp");
@@ -36,9 +34,6 @@ AJBaseProjectile::AJBaseProjectile()
 	ParticleEndComp->SetAutoActivate(false);
 
 	//Audio
-	AudioStartComp = CreateDefaultSubobject<UAudioComponent>("AudioStartComp");
-	AudioStartComp->SetupAttachment(RootComponent);
-	AudioStartComp->bOverrideAttenuation = true;
 	AudioFlyComp = CreateDefaultSubobject<UAudioComponent>("AudioFlyComp");
 	AudioFlyComp->SetupAttachment(RootComponent);
 	AudioFlyComp->bOverrideAttenuation = true;
@@ -70,6 +65,11 @@ void AJBaseProjectile::Tick(float DeltaTime)
 
 void AJBaseProjectile::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+	ReadyToDestroy();
+}
+
+void AJBaseProjectile::ReadyToDestroy()
+{
 	ParticleFlyComp->SetActive(false);
 	ParticleEndComp->SetActive(true);
 
@@ -77,7 +77,6 @@ void AJBaseProjectile::OnActorHit(UPrimitiveComponent* HitComponent, AActor* Oth
 	AudioEndComp->SetActive(true);
 
 	GetWorldTimerManager().SetTimer(DestroyTimeHandle, this, &AJBaseProjectile::Destroy, TimeToDestroy);
-	
 }
 
 void AJBaseProjectile::Destroy()

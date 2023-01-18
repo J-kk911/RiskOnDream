@@ -26,6 +26,10 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Attack")
 	TSubclassOf<AActor> BlackholeProjectileClass;
 
+	//在蓝图中手动设置一个类的实例，位移子弹
+	UPROPERTY(EditAnywhere, Category = "Attack")
+		TSubclassOf<AActor> DisplacementProjectileClass;
+
 	//播放动画
 	UPROPERTY(EditAnywhere, Category = "Attack")
 	UAnimMontage* AttackAnim;
@@ -66,12 +70,17 @@ public:
 	void MagiskProjectileAttack();
 	//黑洞攻击
 	void BlackholeProjectileAttack();
+	//位移投射物
+	void DisplacementProjectileAttack();
 	//发射子弹
 	void SendProjectile(TSubclassOf<AActor>);
-	//恢复正常视野
+	//由移动控制方向
 	void RotationToMovement();
+	//由视角控制方向
+	void RotationToAttack();
 	//交互
 	void PrimaryInteract();
+
 
 public:	
 	// Called every frame

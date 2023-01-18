@@ -72,10 +72,13 @@ void AJCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 
 	//操作
-	PlayerInputComponent->BindAction("MagiskProjectil",IE_Pressed,this,&AJCharacter::MagiskProjectileAttack);
-	PlayerInputComponent->BindAction("BlackholeProjectile", IE_Pressed, this, &AJCharacter::BlackholeProjectileAttack);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AJCharacter::Jump);
 	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &AJCharacter::PrimaryInteract);
+
+	//攻击
+	PlayerInputComponent->BindAction("MagiskProjectil", IE_Pressed, this, &AJCharacter::MagiskProjectileAttack);
+	PlayerInputComponent->BindAction("BlackholeProjectile", IE_Pressed, this, &AJCharacter::BlackholeProjectileAttack);
+	PlayerInputComponent->BindAction("DisplacementProjectile", IE_Pressed, this, &AJCharacter::DisplacementProjectileAttack);
 }
 
 
@@ -106,10 +109,7 @@ void AJCharacter::MoveRight(float value)
 
 void AJCharacter::MagiskProjectileAttack()
 {
-	//一旦攻击，角色就朝向攻击方向，并延迟1.0f秒
-	GetWorldTimerManager().SetTimer(ViewModDelay,this,&AJCharacter::RotationToMovement,1.0f);
-	GetCharacterMovement()->bOrientRotationToMovement = false;
-	bUseControllerRotationYaw = true;
+	RotationToAttack();
 
 	PlayAnimMontage(AttackAnim);
 	FTimerDelegate TimerDel;
@@ -122,14 +122,24 @@ void AJCharacter::MagiskProjectileAttack()
 
 void AJCharacter::BlackholeProjectileAttack()
 {
-	//一旦攻击，角色就朝向攻击方向，并延迟1.0f秒
-	GetWorldTimerManager().SetTimer(ViewModDelay, this, &AJCharacter::RotationToMovement, 1.0f);
-	GetCharacterMovement()->bOrientRotationToMovement = false;
-	bUseControllerRotationYaw = true;
+	RotationToAttack();
 
 	PlayAnimMontage(AttackAnim);
 	FTimerDelegate TimerDel;
 	TimerDel.BindUObject(this, &AJCharacter::SendProjectile, BlackholeProjectileClass);
+
+	//子弹等待动画
+	GetWorldTimerManager().SetTimer(AttackDelay, TimerDel, TimeToHandUp, false);
+
+}
+
+void AJCharacter::DisplacementProjectileAttack()
+{
+	RotationToAttack();
+
+	PlayAnimMontage(AttackAnim);
+	FTimerDelegate TimerDel;
+	TimerDel.BindUObject(this, &AJCharacter::SendProjectile, DisplacementProjectileClass);
 
 	//子弹等待动画
 	GetWorldTimerManager().SetTimer(AttackDelay, TimerDel, TimeToHandUp, false);
@@ -181,6 +191,14 @@ void AJCharacter::RotationToMovement() {
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	bUseControllerRotationYaw = false;
 	GetWorldTimerManager().ClearTimer(ViewModDelay);
+}
+
+void AJCharacter::RotationToAttack()
+{
+	//一旦攻击，角色就朝向攻击方向，并延迟1.0f秒
+	GetWorldTimerManager().SetTimer(ViewModDelay, this, &AJCharacter::RotationToMovement, 1.0f);
+	GetCharacterMovement()->bOrientRotationToMovement = false;
+	bUseControllerRotationYaw = true;
 }
 
 void AJCharacter::PrimaryInteract()

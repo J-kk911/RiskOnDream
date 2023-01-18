@@ -18,13 +18,13 @@ AJBlackholeProjectile::AJBlackholeProjectile()
 	RadialForceComp->AddObjectTypeToAffect(ObjectTypeQuery2);
 
 	SphereComp->SetCollisionProfileName("OverlapAll");
-	TimeToDestroy = 3.0f;
+
 }
 
 void AJBlackholeProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	GetWorldTimerManager().SetTimer(DestroyTimeHandle, this, &AJBlackholeProjectile::Destroy, TimeToDestroy);
+	GetWorldTimerManager().SetTimer(DestroyTimeHandle, this, &AJBlackholeProjectile::ReadyToDestroy, ExistTime);
 }
 
 void AJBlackholeProjectile::Tick(float DeltaTime)
