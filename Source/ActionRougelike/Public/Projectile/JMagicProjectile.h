@@ -3,31 +3,28 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 #include "JBaseProjectile.h"
-#include "JDisplacementProjectile.generated.h"
+#include "JMagicProjectile.generated.h"
 
 UCLASS()
-class ACTIONROUGELIKE_API AJDisplacementProjectile : public AJBaseProjectile
+class ACTIONROUGELIKE_API AJMagicProjectile : public AJBaseProjectile
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AJDisplacementProjectile();
+	AJMagicProjectile();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	void ReadyToDestroy() override;
 
-	
-
-	UPROPERTY()
-		float ExistTime = 0.5f;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+
+	
 };

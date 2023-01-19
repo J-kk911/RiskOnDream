@@ -2,7 +2,7 @@
 
 
 #include "JExplosiveBarrel.h"
-#include "JMagicProjectile.h"
+#include "Projectile/JMagicProjectile.h"
 
 
 // Sets default values

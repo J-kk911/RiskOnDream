@@ -1,11 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "JInteractionComponent.h"
+#include "Character/JInteractionComponent.h"
 #include "JGamePlayInterface.h"
 #include "Camera/CameraComponent.h"
 #include "DrawDebugHelpers.h"
-#include "JCharacter.h"
+
 
 
 // Sets default values for this component's properties

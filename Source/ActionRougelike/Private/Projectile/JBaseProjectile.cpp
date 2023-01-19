@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "JBaseProjectile.h"
+#include "Projectile/JBaseProjectile.h"
 
 // Sets default values
 AJBaseProjectile::AJBaseProjectile()

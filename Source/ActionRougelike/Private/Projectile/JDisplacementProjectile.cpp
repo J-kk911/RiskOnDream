@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "JDisplacementProjectile.h"
+#include "Projectile/JDisplacementProjectile.h"
 
 // Sets default values
 AJDisplacementProjectile::AJDisplacementProjectile()

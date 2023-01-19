@@ -1,13 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "JCharacter.h"
+#include "Character/JCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
-#include "JInteractionComponent.h"
+#include "Character/JInteractionComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "JMagicProjectile.h"
+#include "Projectile/JMagicProjectile.h"
 
 
 // Sets default values
@@ -52,8 +52,7 @@ void AJCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-
-	//UE_LOG(LogTemp, Error, TEXT("%d"), bUseControllerRotationYaw ? 1 : 0);
+	//UE_LOG(LogTemp, Error, TEXT("%s"), *GetActoR);
 
 }
 
