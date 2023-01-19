@@ -70,6 +70,8 @@ void AJBaseProjectile::OnActorHit(UPrimitiveComponent* HitComponent, AActor* Oth
 
 void AJBaseProjectile::ReadyToDestroy()
 {
+	if (DestroyTimeHandle.IsValid()) return;
+
 	ParticleFlyComp->SetActive(false);
 	ParticleEndComp->SetActive(true);
 

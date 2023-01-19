@@ -3,12 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "JInteractionComponent.h"
+#include "JAttributeComponent.h"
 #include "GameFramework/Character.h"
 #include "JCharacter.generated.h"
 
 class UCameraComponent;
 class USpringArmComponent;
-class UJInteractionComponent;
 class UAnimMontage;
 
 UCLASS()
@@ -53,14 +54,20 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* CameraComp;
 
+	//属性组件
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "Component")
+	UJAttributeComponent* AttributeComp;
+
+	//互动接口组件
+	UJInteractionComponent* InteractionComp;
+
 	//控制视野转动handle
 	FTimerHandle ViewModDelay;
 
 	//攻击延迟
 	FTimerHandle AttackDelay;
 
-	//actor组件
-	UJInteractionComponent* InteractionComp;
+
 
 	//向前移动
 	void MoveForward(float value);

@@ -2,9 +2,8 @@
 
 
 #include "Character/JCharacter.h"
-#include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
-#include "Character/JInteractionComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Projectile/JMagicProjectile.h"
@@ -25,18 +24,17 @@ AJCharacter::AJCharacter()
 
 	InteractionComp = CreateDefaultSubobject<UJInteractionComponent>("InteractionComp");
 	
-	//使用 Controller 控制摄像机臂旋转
+	AttributeComp = CreateDefaultSubobject<UJAttributeComponent>("AttributeComp");
+
+	/*
+	* 使用 Controller 控制摄像机臂旋转
+	* 不使用 Controller 控制角色旋转
+	* 角色自动朝向运动方向
+	*/
 	SpringArmComp->bUsePawnControlRotation = true;
-
-	//角色朝向controller方向
-
-	//不使用 Controller 控制角色旋转
 	bUseControllerRotationYaw = false;
-	
-	//角色自动朝向运动方向
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
-	
 }
 
 // Called when the game starts or when spawned
@@ -52,7 +50,7 @@ void AJCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//UE_LOG(LogTemp, Error, TEXT("%s"), *GetActoR);
+	UE_LOG(LogTemp, Error, TEXT("%f"), AttributeComp->Health);
 
 }
 

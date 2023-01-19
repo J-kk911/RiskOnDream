@@ -11,7 +11,7 @@ AJExplosiveBarrel::AJExplosiveBarrel()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	
-	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMesh");
+	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>("MeshComp");
 	MeshComp->SetSimulatePhysics(true);
 	RootComponent = MeshComp;
 	 
@@ -40,18 +40,12 @@ AJExplosiveBarrel::AJExplosiveBarrel()
 
 void AJExplosiveBarrel::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	UE_LOG(LogTemp, Log, TEXT("Get a Hit!"));
-	UE_LOG(LogTemp, Log, TEXT("%s"), *OtherActor->GetClass()->GetName());
 
-	FString Target = "MagicProjectileBP_C";
-	if (OtherActor->GetClass()->GetName() == Target) {
+	AJMagicProjectile* MagicProjectile = Cast<AJMagicProjectile>(OtherActor);
+	if(MagicProjectile){
 		RadialForceComp->FireImpulse();
 		GetWorldTimerManager().SetTimer(DestroyTimeHandle,this,&AJExplosiveBarrel::Destroy,1.0f,false);
 	}
-
-	//if (OtherActor->Implements<AJMagicProjectile>()) {
-	//	UE_LOG(LogTemp, Log, TEXT("right"));
-	//}
 
 }
 
