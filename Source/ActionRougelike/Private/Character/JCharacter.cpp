@@ -50,7 +50,7 @@ void AJCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	UE_LOG(LogTemp, Error, TEXT("%f"), AttributeComp->Health);
+	//UE_LOG(LogTemp, Error, TEXT("%f"), AttributeComp->GetHealth());
 
 }
 

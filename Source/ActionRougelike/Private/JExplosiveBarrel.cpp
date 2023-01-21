@@ -40,7 +40,7 @@ AJExplosiveBarrel::AJExplosiveBarrel()
 
 void AJExplosiveBarrel::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-
+	//通过能不能转换判断是不是目标类
 	AJMagicProjectile* MagicProjectile = Cast<AJMagicProjectile>(OtherActor);
 	if(MagicProjectile){
 		RadialForceComp->FireImpulse();

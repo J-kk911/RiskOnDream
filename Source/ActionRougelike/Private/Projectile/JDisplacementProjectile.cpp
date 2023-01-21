@@ -16,7 +16,7 @@ AJDisplacementProjectile::AJDisplacementProjectile()
 void AJDisplacementProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	GetWorldTimerManager().SetTimer(DestroyTimeHandle, this, &AJDisplacementProjectile::ReadyToDestroy, ExistTime);
+	GetWorldTimerManager().SetTimer(ExistTimeHandle, this, &AJDisplacementProjectile::ReadyToDestroy, ExistTime);
 }
 
 
@@ -29,6 +29,7 @@ void AJDisplacementProjectile::Tick(float DeltaTime)
 
 void AJDisplacementProjectile::ReadyToDestroy()
 {
+	if (DestroyTimeHandle.IsValid()) return;
 	Super::ReadyToDestroy();
 	GetInstigator()->SetActorLocation(GetActorLocation());
 

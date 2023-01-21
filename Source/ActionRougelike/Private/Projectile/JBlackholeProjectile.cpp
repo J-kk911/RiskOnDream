@@ -24,7 +24,7 @@ AJBlackholeProjectile::AJBlackholeProjectile()
 void AJBlackholeProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	GetWorldTimerManager().SetTimer(DestroyTimeHandle, this, &AJBlackholeProjectile::ReadyToDestroy, ExistTime);
+	GetWorldTimerManager().SetTimer(ExisetTimeHandle, this, &AJBlackholeProjectile::ReadyToDestroy, ExistTime);
 }
 
 void AJBlackholeProjectile::Tick(float DeltaTime)

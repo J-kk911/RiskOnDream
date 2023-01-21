@@ -57,7 +57,7 @@ public:
 	//属性组件
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "Component")
 	UJAttributeComponent* AttributeComp;
-
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
 	//互动接口组件
 	UJInteractionComponent* InteractionComp;
 

@@ -20,6 +20,7 @@ void AJMagicProjectile::OnActorBeginOverlap(UPrimitiveComponent* OverlappedCompo
 {
 	//因为是Overlap，所以可以日后增加判断是不是队友
 	if (OtherActor) {
+		//通过actor中能不能找到 属性组件 判断能不能接受打击
 		UJAttributeComponent* AttributeComp = Cast<UJAttributeComponent>(OtherActor->GetComponentByClass(UJAttributeComponent::StaticClass()));
 		if (AttributeComp) {
 			AttributeComp->ApplyHealthChange(-20.0);

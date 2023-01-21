@@ -30,6 +30,8 @@ protected:
 	UPROPERTY()
 	float ExistTime = 5.0f;
 
+	FTimerHandle ExisetTimeHandle;
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

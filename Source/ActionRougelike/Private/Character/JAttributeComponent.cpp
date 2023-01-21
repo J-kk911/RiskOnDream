@@ -19,5 +19,9 @@ bool UJAttributeComponent::ApplyHealthChange(float Delta)
 	return true;
 }
 
+float UJAttributeComponent::GetHealth()
+{
+	return this->Health;
+}
 
 

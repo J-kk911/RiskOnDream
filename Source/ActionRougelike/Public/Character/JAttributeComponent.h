@@ -16,8 +16,18 @@ public:
 	// Sets default values for this component's properties
 	UJAttributeComponent();
 
-	bool ApplyHealthChange(float);
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes")
+		float Health;
 
-	float Health;
+public:
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+
+	bool ApplyHealthChange(float Delta);
+
+
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+	float GetHealth();
 		
+
 };
