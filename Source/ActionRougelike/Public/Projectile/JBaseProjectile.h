@@ -41,7 +41,13 @@ protected:
 	//结束音效
 	UPROPERTY(VisibleAnywhere, Category = "Audio")
 		UAudioComponent* AudioEndComp;
-	
+
+	//飞行一定时间后自动销毁
+	UPROPERTY(VisibleAnywhere)
+		FTimerHandle MaxExistTimeHandle;
+	UPROPERTY(VisibleAnywhere)
+		float MaxExistTime = 10.0f;
+
 	//撞击后
 	UFUNCTION()
 	virtual void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);

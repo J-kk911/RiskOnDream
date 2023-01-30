@@ -52,6 +52,7 @@ void AJBaseProjectile::BeginPlay()
 	//ÉèÖÃ×²»÷
 	SphereComp->IgnoreActorWhenMoving(GetInstigator(), true);
 	SphereComp->OnComponentHit.AddDynamic(this, &AJBaseProjectile::OnActorHit);
+	GetWorldTimerManager().SetTimer(MaxExistTimeHandle, this, &AJBaseProjectile::ReadyToDestroy, MaxExistTime);
 }
 
 
