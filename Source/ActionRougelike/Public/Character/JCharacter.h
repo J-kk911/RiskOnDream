@@ -46,6 +46,8 @@ public:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	virtual void PostInitializeComponents() override;
+
 	//ÉãÏñ»úÐµ±Û
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComp;
@@ -88,6 +90,10 @@ public:
 	//½»»¥
 	void PrimaryInteract();
 
+
+	UFUNCTION()
+	void OnHealthChanged(AActor* InstigatorActor, UJAttributeComponent* OwningComp, float NewHealth, float Delta);
+	
 
 public:	
 	// Called every frame

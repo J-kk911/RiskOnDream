@@ -10,12 +10,18 @@ UJAttributeComponent::UJAttributeComponent()
 }
 
 
+bool UJAttributeComponent::IsAlive() const
+{
+	return Health > 0.0f;
+}
+
 bool UJAttributeComponent::ApplyHealthChange(float Delta)
 {
 	if (Health == 0)return false;
 	Health += Delta;
 	if (Health < 0) Health = 0;
 	if (Health > 100) Health = 100;
+	OnHealthChanged.Broadcast(nullptr,this,Health,Delta);
 	return true;
 }
 

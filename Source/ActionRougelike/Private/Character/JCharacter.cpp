@@ -37,6 +37,14 @@ AJCharacter::AJCharacter()
 
 }
 
+void AJCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	//函数绑定到事件上，跟随事件触发
+	AttributeComp->OnHealthChanged.AddDynamic(this,&AJCharacter::OnHealthChanged);
+}
+
+
 // Called when the game starts or when spawned
 void AJCharacter::BeginPlay()
 {
@@ -201,4 +209,12 @@ void AJCharacter::RotationToAttack()
 void AJCharacter::PrimaryInteract()
 {
 	InteractionComp->PrimaryInteract();
+}
+
+void AJCharacter::OnHealthChanged(AActor* InstigatorActor, UJAttributeComponent* OwningComp, float NewHealth, float Delta)
+{
+	if (NewHealth <= 0.0f) {
+		APlayerController* PC = Cast<APlayerController>(GetController());
+		DisableInput(PC);
+	}
 }
