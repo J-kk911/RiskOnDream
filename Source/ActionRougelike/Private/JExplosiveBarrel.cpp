@@ -3,6 +3,8 @@
 
 #include "JExplosiveBarrel.h"
 #include "Projectile/JMagicProjectile.h"
+#include "Character/JAttributeComponent.h"
+#include "DrawDebugHelpers.h"
 
 
 // Sets default values
@@ -21,7 +23,7 @@ AJExplosiveBarrel::AJExplosiveBarrel()
 	//影响worldDynamic
 	RadialForceComp->AddCollisionChannelToAffect(ECC_WorldDynamic);
 	RadialForceComp->SetAutoActivate(false);
-	RadialForceComp->Radius = 750.0f;
+	RadialForceComp->Radius = ImpulseRadius;
 	//强度,忽略物理性质
 	RadialForceComp->ImpulseStrength = 1000.0f;
 	RadialForceComp->bImpulseVelChange = true;
@@ -47,6 +49,25 @@ void AJExplosiveBarrel::OnActorHit(UPrimitiveComponent* HitComponent, AActor* Ot
 		GetWorldTimerManager().SetTimer(DestroyTimeHandle,this,&AJExplosiveBarrel::Destroy,1.0f,false);
 	}
 
+	TArray<struct FOverlapResult> OutOverlaps;
+	const FVector Pos = GetActorLocation(); 
+	FQuat Rot = GetActorQuat();
+	ECollisionChannel TraceChannel = ECC_Pawn;
+	FCollisionShape CollisionShape;
+	CollisionShape.SetSphere(ImpulseRadius);
+	CollisionShape.ShapeType = ECollisionShape::Sphere;
+	GetWorld()->OverlapMultiByChannel(OutOverlaps, Pos, Rot, TraceChannel, CollisionShape);
+
+	for (auto OverLapPawn : OutOverlaps) 
+	{
+		//如果存在组件则扣血
+		UJAttributeComponent* AttributeComp = Cast<UJAttributeComponent>(OverLapPawn.Actor->GetComponentByClass(UJAttributeComponent::StaticClass()));
+		if (AttributeComp) {
+			//显示数值伤害
+			DrawDebugString(GetWorld(), OverLapPawn.GetActor()->GetActorLocation(), TEXT("-20"), NULL, FColor::Red, 0.5, false, 1.f);
+			AttributeComp->ApplyHealthChange(-50.0);
+		}
+	}
 }
 
 void AJExplosiveBarrel::Destroy()
