@@ -5,6 +5,7 @@
 #include "DrawDebugHelpers.h"
 #include "Character/JAttributeComponent.h"
 
+
 // Sets default values
 AJMagicProjectile::AJMagicProjectile()
 {
@@ -26,6 +27,8 @@ void AJMagicProjectile::OnActorBeginOverlap(UPrimitiveComponent* OverlappedCompo
 		UJAttributeComponent* AttributeComp = Cast<UJAttributeComponent>(OtherActor->GetComponentByClass(UJAttributeComponent::StaticClass()));
 		if (AttributeComp) {
 			if (Hit)return;
+			//ÏÔÊ¾ÊýÖµÉËº¦
+			DrawDebugString(GetWorld(), OtherActor->GetActorLocation(),TEXT("-20"),NULL,FColor::Red,0.5,false,1.f);
 			AttributeComp->ApplyHealthChange(-20.0);
 			ReadyToDestroy();
 			Hit = true;
