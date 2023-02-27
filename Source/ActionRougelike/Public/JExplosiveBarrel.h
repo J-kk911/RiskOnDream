@@ -34,15 +34,11 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UAudioComponent* AudioComp;
 
-	UPROPERTY(VisibleAnywhere)
-	FTimerHandle DestroyTimeHandle;
-
-	UFUNCTION()
-	void Destroy();
-
 	UFUNCTION()
 	void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 protected:
 	float ImpulseRadius = 750.0f;
+	
+	bool Hited = false;
 };

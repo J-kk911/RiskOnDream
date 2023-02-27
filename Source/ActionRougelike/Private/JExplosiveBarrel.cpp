@@ -44,10 +44,13 @@ void AJExplosiveBarrel::OnActorHit(UPrimitiveComponent* HitComponent, AActor* Ot
 {
 	//通过能不能转换判断是不是目标类
 	AJMagicProjectile* MagicProjectile = Cast<AJMagicProjectile>(OtherActor);
-	if(MagicProjectile){
-		RadialForceComp->FireImpulse();
-		GetWorldTimerManager().SetTimer(DestroyTimeHandle,this,&AJExplosiveBarrel::Destroy,1.0f,false);
+	if(MagicProjectile == NULL || Hited == true){
+		return;
 	}
+
+	EffectComp->SetActive(false);
+	RadialForceComp->FireImpulse();
+	Hited = true;
 
 	TArray<struct FOverlapResult> OutOverlaps;
 	const FVector Pos = GetActorLocation(); 
@@ -70,8 +73,4 @@ void AJExplosiveBarrel::OnActorHit(UPrimitiveComponent* HitComponent, AActor* Ot
 	}
 }
 
-void AJExplosiveBarrel::Destroy()
-{
-	GetWorld()->DestroyActor(this);
-}
 
