@@ -23,7 +23,7 @@ void AJAICharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	//绑定看到角色动作
+	//绑定看到角色时候的动作
 	PawnSensingComp->OnSeePawn.AddDynamic(this, &AJAICharacter::HaveSeePawn);
 }
 
@@ -31,7 +31,7 @@ void AJAICharacter::BeginPlay()
 void AJAICharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 }
 
 // Called to bind functionality to input
@@ -45,5 +45,8 @@ void AJAICharacter::HaveSeePawn(APawn* Pawn)
 {
 	FVector Location = Pawn->GetActorLocation();
 	BlackboardComp->SetValueAsVector("TargetLocation", Location);
+
+	//FVector res = BlackboardComp->GetValueAsVector("TargetLocation");
+	//UE_LOG(LogTemp, Error, TEXT("i see you %s "),*res.ToString());
 }
 

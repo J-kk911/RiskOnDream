@@ -23,10 +23,13 @@ public:
 
 public:
 
-	//行为树组件、
+	//行为树组件
 	UPROPERTY(EditAnywhere)
 	class UBehaviorTreeComponent* BehaviorTreeComp;
+	UPROPERTY(EditAnywhere)
 	//行为树
 	class UBehaviorTree* BehaviorTree;
 
+public:
+	FORCEINLINE UBehaviorTreeComponent* GetBehaviorTreeComp();
 };

@@ -11,20 +11,37 @@
 AJAIController::AJAIController()
 {
 	//
+	RootComponent->Activate(true);
 	BehaviorTreeComp = CreateDefaultSubobject<UBehaviorTreeComponent>("BehaviorTreeComp");
+
+	static ConstructorHelpers::FObjectFinder<UBehaviorTree> BehaviorTreeAssert(TEXT("/Game/RiskOnDream/AI/BehaviorTree")); // 找到编辑器中的行为树
+	if (BehaviorTreeAssert.Succeeded())
+	{
+		BehaviorTree = BehaviorTreeAssert.Object; // 分配给tree
+	}
+
 }
 
 void AJAIController::OnPossess(APawn* InPawn)
 {
-	Super::OnPossess(InPawn);
+
+
 	AJAICharacter* AICharacter = Cast<AJAICharacter>(InPawn);
+	if (AICharacter == nullptr) {
+		return;
+	}
 
-	//运行行为树
-	BehaviorTreeComp->StartTree(*BehaviorTree);
+	Super::OnPossess(InPawn);
 
-	//设置黑板资源
-	AICharacter->BlackboardComp->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
-
+	if (BehaviorTreeComp != nullptr)
+	{
+		if (BehaviorTree != nullptr) {
+			//运行行为树
+			BehaviorTreeComp->StartTree(*BehaviorTree);
+			AICharacter->BlackboardComp->InitializeBlackboard(*BehaviorTree->BlackboardAsset); // 初始化
+			UE_LOG(LogTemp, Error, TEXT("start"));
+		}
+	}
 }
 
 void AJAIController::OnUnPossess()
@@ -33,4 +50,12 @@ void AJAIController::OnUnPossess()
 	//停止行为树
 	BehaviorTreeComp->StopTree(EBTStopMode::Safe);
 
+
+}
+
+
+
+FORCEINLINE UBehaviorTreeComponent* AJAIController::GetBehaviorTreeComp()
+{
+	return AJAIController::BehaviorTreeComp;
 }

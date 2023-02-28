@@ -34,8 +34,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	//黑板资源
-	//class UBlackboardData* BlackBoardData;
+	//黑板组件资源
+	UPROPERTY(EditAnywhere)
 	class UBlackboardComponent* BlackboardComp;
 
 };
