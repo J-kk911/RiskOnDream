@@ -1,19 +1,20 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AI/JBTDecorator.h"
+#include "AI/JBTJudgeDistanceDecorator.h"
 #include "AI/JAIController.h"
 #include "AI/JAICharacter.h"
 #include "Character/JCharacter.h"
 
-bool UJBTDecorator::CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const
+
+bool UJBTJudgeDistanceDecorator::CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const
 {
 	UE_LOG(LogTemp, Error, TEXT("think "));
 
-	AJAIController* AIC = Cast<AJAIController>(OwnerComp.GetAIOwner());
-	if (AIC != nullptr)
+	AJAIController* AIController = Cast<AJAIController>(OwnerComp.GetAIOwner());
+	if (AIController != nullptr)
 	{
-		AJAICharacter* AICharacter = Cast<AJAICharacter>(AIC->GetPawn());
+		AJAICharacter* AICharacter = Cast<AJAICharacter>(AIController->GetPawn());
 		FVector AILocation = AICharacter->GetActorLocation();
 		AJCharacter* Player = Cast<AJCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn()); // »ñµÃÍæ¼Ò
 		if (Player != nullptr)
