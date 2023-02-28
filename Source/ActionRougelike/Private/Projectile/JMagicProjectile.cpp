@@ -20,12 +20,12 @@ AJMagicProjectile::AJMagicProjectile()
 
 void AJMagicProjectile::OnActorBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-
+	UE_LOG(LogTemp, Error, TEXT("begin overlap"));
 	//因为是Overlap，所以可以日后增加判断是不是队友
 	if (OtherActor) {
 		//通过actor中能不能找到 属性组件 判断能不能接受打击
 		UJAttributeComponent* AttributeComp = Cast<UJAttributeComponent>(OtherActor->GetComponentByClass(UJAttributeComponent::StaticClass()));
-		if (AttributeComp) {
+		if (AttributeComp != nullptr) {
 			if (Hit)return;
 			//显示数值伤害
 			DrawDebugString(GetWorld(), OtherActor->GetActorLocation(),TEXT("-20"),NULL,FColor::Red,0.5,false,1.f);

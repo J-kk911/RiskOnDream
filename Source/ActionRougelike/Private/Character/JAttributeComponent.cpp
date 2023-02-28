@@ -17,6 +17,8 @@ bool UJAttributeComponent::IsAlive() const
 
 bool UJAttributeComponent::ApplyHealthChange(float Delta)
 {
+	//UE_LOG(LogTemp, Warning, TEXT("ATTACK!!"))
+
 	if (Health == 0)return false;
 	Health += Delta;
 	if (Health < 0) Health = 0;

@@ -7,6 +7,8 @@
 #include "Perception/PawnSensingComponent.h"
 #include "JAICharacter.generated.h"
 
+class JAttributeComponent;
+class UJAttributeComponent;
 UCLASS()
 class ACTIONROUGELIKE_API AJAICharacter : public ACharacter
 {
@@ -20,9 +22,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	//视觉
-	UPROPERTY(EditAnywhere, Category = See)
-		UPawnSensingComponent* PawnSensingComp;
+
 	//当看到玩家
 	UFUNCTION()
 	void HaveSeePawn(APawn* Pawn);
@@ -38,4 +38,19 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UBlackboardComponent* BlackboardComp;
 
+	//属性组件
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
+		UJAttributeComponent* AttributeComp;
+
+	//视觉
+	UPROPERTY(EditAnywhere, Category = See)
+		UPawnSensingComponent* PawnSensingComp;
+
+	virtual void PostInitializeComponents() override;
+
+	UFUNCTION()
+		void OnHealthChanged(AActor* InstigatorActor, UJAttributeComponent* OwningComp, float NewHealth, float Delta);
+
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	UAnimMontage* DeadthAnim;
 };

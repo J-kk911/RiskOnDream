@@ -4,10 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "JInteractionComponent.h"
-#include "JAttributeComponent.h"
 #include "GameFramework/Character.h"
 #include "JCharacter.generated.h"
 
+class JAttributeComponent;
 class UCameraComponent;
 class USpringArmComponent;
 class UAnimMontage;
@@ -34,6 +34,9 @@ protected:
 	//≤•∑≈∂Øª≠
 	UPROPERTY(EditAnywhere, Category = "Attack")
 	UAnimMontage* AttackAnim;
+
+	UPROPERTY(EditAnywhere, Category = "Attack")
+		UAnimMontage* DeadthAnim;
 
 	//Ãß ÷—”≥Ÿ
 	UPROPERTY(EditAnywhere, Category = "Attack")
@@ -91,7 +94,7 @@ public:
 	void PrimaryInteract();
 
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void OnHealthChanged(AActor* InstigatorActor, UJAttributeComponent* OwningComp, float NewHealth, float Delta);
 	
 

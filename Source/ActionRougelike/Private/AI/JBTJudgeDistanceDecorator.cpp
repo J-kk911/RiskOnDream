@@ -9,7 +9,7 @@
 
 bool UJBTJudgeDistanceDecorator::CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const
 {
-	UE_LOG(LogTemp, Error, TEXT("think "));
+	//UE_LOG(LogTemp, Error, TEXT("think "));
 
 	AJAIController* AIController = Cast<AJAIController>(OwnerComp.GetAIOwner());
 	if (AIController != nullptr)
@@ -19,25 +19,17 @@ bool UJBTJudgeDistanceDecorator::CalculateRawConditionValue(UBehaviorTreeCompone
 		AJCharacter* Player = Cast<AJCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn()); // 获得玩家
 		if (Player != nullptr)
 		{
-			FVector PlayerLocation = Player->GetActorLocation();
-			// 计算距离
-			float Dis = (PlayerLocation - AILocation).Size();
-			if (Dis < fDis)
-			{
-				return false; // 足够近，不移动了
-			}
-			else
-			{
-				return true; // 不够近，继续移动
+			//判断是否能看到玩家
+			if (AICharacter->PawnSensingComp->CouldSeePawn(Player)) {
+				FVector PlayerLocation = Player->GetActorLocation();
+				// 计算距离
+				float Dis = (PlayerLocation - AILocation).Size();
+				if (Dis > fDis)
+				{
+					return true; // 不够近，继续移动
+				}
 			}
 		}
-		else
-		{
-			return false;
-		}
 	}
-	else
-	{
-		return false;
-	}
+	return false;
 }

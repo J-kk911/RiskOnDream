@@ -7,6 +7,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Projectile/JMagicProjectile.h"
+#include "Character/JAttributeComponent.h"
 
 
 // Sets default values
@@ -58,7 +59,6 @@ void AJCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//UE_LOG(LogTemp, Error, TEXT("%f"), AttributeComp->GetHealth());
 
 }
 
@@ -214,6 +214,8 @@ void AJCharacter::PrimaryInteract()
 void AJCharacter::OnHealthChanged(AActor* InstigatorActor, UJAttributeComponent* OwningComp, float NewHealth, float Delta)
 {
 	if (NewHealth <= 0.0f) {
+		//UE_LOG(LogTemp,Warning,TEXT("xxx"))
+		PlayAnimMontage(DeadthAnim);
 		APlayerController* PC = Cast<APlayerController>(GetController());
 		DisableInput(PC);
 	}
