@@ -5,6 +5,8 @@
 #include "AI/JAIController.h"
 #include "AI/JAICharacter.h"
 #include "Character/JCharacter.h"
+#include "BehaviorTree/BlackboardComponent.h"
+
 
 
 bool UJBTJudgeDistanceDecorator::CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const
@@ -16,20 +18,16 @@ bool UJBTJudgeDistanceDecorator::CalculateRawConditionValue(UBehaviorTreeCompone
 	{
 		AJAICharacter* AICharacter = Cast<AJAICharacter>(AIController->GetPawn());
 		FVector AILocation = AICharacter->GetActorLocation();
-		AJCharacter* Player = Cast<AJCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn()); // 获得玩家
-		if (Player != nullptr)
+		UBlackboardComponent* BlackboardComp = AICharacter->BlackboardComp;
+		FVector TargetLocation = BlackboardComp->GetValueAsVector(TEXT("TargetLocation"));
+		// 计算距离
+		float Dis = (TargetLocation - AILocation).Size();
+		if (Dis > fDis)
 		{
-			//判断是否能看到玩家
-			if (AICharacter->PawnSensingComp->CouldSeePawn(Player)) {
-				FVector PlayerLocation = Player->GetActorLocation();
-				// 计算距离
-				float Dis = (PlayerLocation - AILocation).Size();
-				if (Dis > fDis)
-				{
-					return true; // 不够近，继续移动
-				}
-			}
+			return true; // 不够近，继续移动
 		}
+			
+		
 	}
 	return false;
 }

@@ -66,9 +66,7 @@ void AJExplosiveBarrel::OnActorHit(UPrimitiveComponent* HitComponent, AActor* Ot
 		//如果存在组件则扣血
 		UJAttributeComponent* AttributeComp = Cast<UJAttributeComponent>(OverLapPawn.Actor->GetComponentByClass(UJAttributeComponent::StaticClass()));
 		if (AttributeComp) {
-			//显示数值伤害
-			DrawDebugString(GetWorld(), OverLapPawn.GetActor()->GetActorLocation(), TEXT("-20"), NULL, FColor::Red, 0.5, false, 1.f);
-			AttributeComp->ApplyHealthChange(-50.0);
+			AttributeComp->ApplyHealthChange(-50.0, OverLapPawn.Actor->GetActorLocation(), this->GetInstigator());
 		}
 	}
 }

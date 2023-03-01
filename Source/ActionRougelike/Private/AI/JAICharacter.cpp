@@ -37,6 +37,8 @@ void AJAICharacter::BeginPlay()
 
 	BlackboardComp->SetValueAsVector("TargetLocation", this->GetActorLocation());
 
+	AttributeComp->SetHealth(200.0);
+
 }
 
 
@@ -44,7 +46,7 @@ void AJAICharacter::BeginPlay()
 void AJAICharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
+	//UE_LOG(LogTemp, Warning, TEXT("%f"),AttributeComp->GetHealth());
 }
 
 // Called to bind functionality to input
@@ -66,11 +68,15 @@ void AJAICharacter::HaveSeePawn(APawn* Pawn)
 void AJAICharacter::OnHealthChanged(AActor* InstigatorActor, UJAttributeComponent* OwningComp, float NewHealth, float Delta)
 {
 	if (NewHealth <= 0.0f) {
-		//UE_LOG(LogTemp, Warning, TEXT("xxx"))
 		PlayAnimMontage(DeadthAnim);
-		APlayerController* PC = Cast<APlayerController>(GetController());
-		DisableInput(PC);
+		AAIController* AIController = Cast<AAIController>(GetController());
+		AIControllerClass = NULL;//
 	}
+	if (InstigatorActor) {
+		UE_LOG(LogTemp, Warning, TEXT("character"));
+		BlackboardComp->SetValueAsVector("TargetLocation", InstigatorActor->GetActorLocation());
+	}
+
 }
 
 

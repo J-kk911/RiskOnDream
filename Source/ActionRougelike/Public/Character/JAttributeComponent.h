@@ -6,7 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "JAttributeComponent.generated.h"
 
-//自定义动态多播代理？？应该是自定义一个在蓝图中可以触发的事件？
+//自定义动态多播代理？？广播后，用来让上层函数触发
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnHealthChanged, AActor*, InstigatorActor, UJAttributeComponent*, OwningComp, float, NewHealth, float, Delta);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -31,10 +31,12 @@ public:
 		FOnHealthChanged OnHealthChanged;
 
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
-	bool ApplyHealthChange(float Delta);
+	bool ApplyHealthChange(float Delta,FVector Location,AActor* Instigator);
 
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	float GetHealth();
 		
+	void SetHealth(float MaxHealth);
+
 
 };
