@@ -70,7 +70,8 @@ void AJAICharacter::OnHealthChanged(AActor* InstigatorActor, UJAttributeComponen
 	if (NewHealth <= 0.0f) {
 		PlayAnimMontage(DeadthAnim);
 		AAIController* AIController = Cast<AAIController>(GetController());
-		AIControllerClass = NULL;//
+		//AIControllerClass = NULL;//
+		this->Controller->UnPossess();
 	}
 	if (InstigatorActor) {
 		UE_LOG(LogTemp, Warning, TEXT("character"));
