@@ -17,15 +17,23 @@ bool UJBTJudgeDistanceDecorator::CalculateRawConditionValue(UBehaviorTreeCompone
 	if (AIController != nullptr)
 	{
 		AJAICharacter* AICharacter = Cast<AJAICharacter>(AIController->GetPawn());
-		FVector AILocation = AICharacter->GetActorLocation();
-		UBlackboardComponent* BlackboardComp = AICharacter->BlackboardComp;
-		FVector TargetLocation = BlackboardComp->GetValueAsVector(TEXT("TargetLocation"));
-		// 计算距离
-		float Dis = (TargetLocation - AILocation).Size();
-		if (Dis > fDis)
-		{
-			return true; // 不够近，继续移动
+		//UE_LOG(LogTemp, Error, TEXT("NOW "));
+
+		//最近被攻击，当前节点才生效
+		if (AICharacter ->AttackedLately.IsValid()) {
+			//UE_LOG(LogTemp, Error, TEXT("ATTACKED! "));
+
+			FVector AILocation = AICharacter->GetActorLocation();
+			UBlackboardComponent* BlackboardComp = AICharacter->BlackboardComp;
+			FVector TargetLocation = BlackboardComp->GetValueAsVector(TEXT("TargetLocation"));
+			// 计算距离
+			float Dis = (TargetLocation - AILocation).Size();
+			if (Dis > fDis)
+			{
+				return true; // 不够近，继续移动
+			}
 		}
+		
 			
 		
 	}

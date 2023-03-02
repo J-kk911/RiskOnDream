@@ -14,8 +14,6 @@ EBTNodeResult::Type UJBTMovementTaskNode::ExecuteTask(UBehaviorTreeComponent& Ow
 	// 获得行为树的所属controler
 	AJAIController* AIController = Cast<AJAIController>(OwnerComp.GetAIOwner());
 
-	//FVector temp = { 0,0,0 };
-	//AIController->MoveToLocation(temp);
 
 	// 获得黑板上的数据
 	AJAICharacter* AICharacter = Cast<AJAICharacter>(AIController->GetPawn());

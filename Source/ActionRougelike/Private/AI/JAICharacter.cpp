@@ -73,11 +73,51 @@ void AJAICharacter::OnHealthChanged(AActor* InstigatorActor, UJAttributeComponen
 		//AIControllerClass = NULL;//
 		this->Controller->UnPossess();
 	}
+
 	if (InstigatorActor) {
 		UE_LOG(LogTemp, Warning, TEXT("character"));
 		BlackboardComp->SetValueAsVector("TargetLocation", InstigatorActor->GetActorLocation());
 	}
+	AttackedLately.Invalidate();
+	GetWorldTimerManager().SetTimer(AttackedLately,this,&AJAICharacter::AttackedLatelyClear, 30.0f, false);
+}
+
+void AJAICharacter::Attack()
+{
+	PlayAnimMontage(AttackAnim);
+	GetWorldTimerManager().SetTimer(AttackTimeHandle, this, &AJAICharacter::DealDemage, TimeToDealDemage);
+	AttackCDTimeHandle.Invalidate();
+	GetWorldTimerManager().SetTimer(AttackCDTimeHandle, this, &AJAICharacter::AttackCDClaer, AttackCD);
 
 }
 
+void AJAICharacter::DealDemage()
+{
+	TArray<struct FOverlapResult> OutOverlaps;
+	const FVector Pos = GetActorLocation();
+	FQuat Rot = GetActorQuat();
+	ECollisionChannel TraceChannel = ECC_Pawn;
+	FCollisionShape CollisionShape;
+	CollisionShape.SetSphere(AttackRadius/2);
+	CollisionShape.ShapeType = ECollisionShape::Sphere;
+	GetWorld()->OverlapMultiByChannel(OutOverlaps, Pos, Rot, TraceChannel, CollisionShape);
 
+	for (auto OverLapPawn : OutOverlaps)
+	{
+		//如果存在组件则扣血
+		UJAttributeComponent* OtherAttributeComp = Cast<UJAttributeComponent>(OverLapPawn.Actor->GetComponentByClass(UJAttributeComponent::StaticClass()));
+		if (OtherAttributeComp && OtherAttributeComp->GetOwner()!=this) {
+			OtherAttributeComp->ApplyHealthChange(-10.0, OverLapPawn.Actor->GetActorLocation(), this->GetInstigator());
+		}
+	}
+}
+
+void AJAICharacter::AttackedLatelyClear()
+{
+	AttackedLately.Invalidate();
+}
+
+void AJAICharacter::AttackCDClaer()
+{
+	AttackCDTimeHandle.Invalidate();
+}

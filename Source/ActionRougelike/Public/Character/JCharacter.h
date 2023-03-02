@@ -94,6 +94,7 @@ public:
 	void PrimaryInteract();
 
 
+	void QuitGame();
 	UFUNCTION(BlueprintCallable)
 	void OnHealthChanged(AActor* InstigatorActor, UJAttributeComponent* OwningComp, float NewHealth, float Delta);
 	
@@ -105,4 +106,11 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+public:
+	UPROPERTY(EditAnywhere)
+	FTimerHandle RestartLevelTimeHandle;
+	UPROPERTY(EditAnywhere)
+	float TimeToRestart = 3.0f;
+	UFUNCTION()
+	void ReatartLevel();
 };

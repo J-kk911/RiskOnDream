@@ -2,12 +2,15 @@
 
 
 #include "Character/JCharacter.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Projectile/JMagicProjectile.h"
 #include "Character/JAttributeComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "GameFramework/PlayerController.h"
 
 
 // Sets default values
@@ -79,6 +82,7 @@ void AJCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	//²Ù×÷
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AJCharacter::Jump);
 	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &AJCharacter::PrimaryInteract);
+	PlayerInputComponent->BindAction("QuitGame", IE_Pressed, this, &AJCharacter::QuitGame);
 
 	//¹¥»÷
 	PlayerInputComponent->BindAction("MagiskProjectil", IE_Pressed, this, &AJCharacter::MagiskProjectileAttack);
@@ -211,12 +215,24 @@ void AJCharacter::PrimaryInteract()
 	InteractionComp->PrimaryInteract();
 }
 
+void AJCharacter::QuitGame()
+{
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
+	UKismetSystemLibrary::QuitGame(this, PlayerController, EQuitPreference::Quit,true); 
+}
+
+
 void AJCharacter::OnHealthChanged(AActor* InstigatorActor, UJAttributeComponent* OwningComp, float NewHealth, float Delta)
 {
 	if (NewHealth <= 0.0f) {
-		//UE_LOG(LogTemp,Warning,TEXT("xxx"))
 		PlayAnimMontage(DeadthAnim);
 		APlayerController* PC = Cast<APlayerController>(GetController());
 		DisableInput(PC);
+		GetWorldTimerManager().SetTimer(RestartLevelTimeHandle,this, &AJCharacter::ReatartLevel, TimeToRestart, false);
 	}
+}
+
+void AJCharacter::ReatartLevel() {
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
+	PlayerController->RestartLevel();
 }

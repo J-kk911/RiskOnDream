@@ -53,4 +53,39 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Attack")
 	UAnimMontage* DeadthAnim;
+
+	UFUNCTION()
+	void Attack();
+
+	UPROPERTY(EditAnywhere)
+	UAnimMontage* AttackAnim;
+
+	UPROPERTY(VisibleAnywhere)
+	FTimerHandle AttackTimeHandle;
+	
+	UPROPERTY(EditAnyWhere)
+	float TimeToDealDemage = 0.5f; 
+
+	UPROPERTY(EditAnyWhere)
+	float Demage = 10.0f;
+
+	UFUNCTION(BlueprintCallable)
+	void DealDemage();
+
+	UFUNCTION(BlueprintCallable)
+	void AttackedLatelyClear();
+	UPROPERTY()
+	FTimerHandle AttackedLately;
+
+public:
+	UPROPERTY()
+	FTimerHandle AttackCDTimeHandle;
+	UFUNCTION()
+	void AttackCDClaer();
+	UPROPERTY(EditAnywhere)
+	float AttackCD = 5.0f;
+
+	UPROPERTY()
+		float AttackRadius = 500.0f;
+
 };
