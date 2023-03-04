@@ -196,7 +196,8 @@ void AJCharacter::SendProjectile(TSubclassOf<AActor> ProjectileClass){
 
 }
 
-void AJCharacter::RotationToMovement() {
+void AJCharacter::RotationToMovement() 
+{
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	bUseControllerRotationYaw = false;
 	GetWorldTimerManager().ClearTimer(ViewModDelay);

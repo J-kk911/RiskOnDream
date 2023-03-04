@@ -36,12 +36,12 @@ void AJItemChest::BeginPlay()
 	//这部分不能在构造函数里，因为curve还没绑定
 	if (Curver) {
 		/*
-		* 函数分别通过TEXT绑定在两个变量上再传到Timeline中，注意参数类型
+		* 函数分别通过TEXT绑定在两个函数上再传到Timeline中，注意参数类型
 		* 一个是过程中
 		* 一个是结束时候触发
 		*/
 		FOnTimelineFloat OnTimelineFloatEvent;
-		FOnTimelineEvent OnTimelineFinishedEvent;
+		//FOnTimelineEvent OnTimelineFinishedEvent;
 
 		OnTimelineFloatEvent.BindUFunction(this, TEXT("OnTimelineTick"));
 		//OnTimelineFinishedEvent.BindUFunction(this, TEXT("SetState"));
@@ -74,10 +74,10 @@ void AJItemChest::Interact_Implementation(APawn* OperaterPawn)
 	}
 }
 
-void AJItemChest::OnTimelineTick(float Output)
+void AJItemChest::OnTimelineTick(float OpenAngle)
 {
 	//UE_LOG(LogTemp, Warning, TEXT("output:%f"), Output);
-	LidMesh->SetRelativeRotation(FRotator(Output, 0, 0));
+	LidMesh->SetRelativeRotation(FRotator(OpenAngle, 0, 0));
 
 }
 

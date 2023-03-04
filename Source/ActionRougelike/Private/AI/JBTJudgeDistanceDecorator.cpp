@@ -20,7 +20,7 @@ bool UJBTJudgeDistanceDecorator::CalculateRawConditionValue(UBehaviorTreeCompone
 		//UE_LOG(LogTemp, Error, TEXT("NOW "));
 
 		//最近被攻击，当前节点才生效
-		if (AICharacter ->AttackedLately.IsValid()) {
+		if (AICharacter ->AttackedLatelyTimeHandle.IsValid()) {
 			//UE_LOG(LogTemp, Error, TEXT("ATTACKED! "));
 
 			FVector AILocation = AICharacter->GetActorLocation();

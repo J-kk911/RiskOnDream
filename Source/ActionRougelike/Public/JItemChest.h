@@ -25,12 +25,14 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+private:
 	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* BaseMesh;
+		UStaticMeshComponent* BaseMesh;
 
 	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* LidMesh;
+		UStaticMeshComponent* LidMesh;
 
+	//设置一个时间线事件组件，用于在激活的时候，不断触发事件
 	UPROPERTY(EditDefaultsOnly)
 		UTimelineComponent* OpenTimeline;
 
@@ -39,16 +41,13 @@ protected:
 		UCurveFloat* Curver;
 
 	UPROPERTY(EditDefaultsOnly)
-	bool Open = false;
+		bool Open = false;
 
-	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION()
-		void OnTimelineTick(float Output);	// Timeline 更新时调用
-
-	
+		void OnTimelineTick(float OpenAngle);	// Timeline 更新时调用
 
 };

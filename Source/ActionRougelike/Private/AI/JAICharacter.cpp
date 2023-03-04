@@ -75,11 +75,11 @@ void AJAICharacter::OnHealthChanged(AActor* InstigatorActor, UJAttributeComponen
 	}
 
 	if (InstigatorActor) {
-		UE_LOG(LogTemp, Warning, TEXT("character"));
+		//UE_LOG(LogTemp, Warning, TEXT("character"));
 		BlackboardComp->SetValueAsVector("TargetLocation", InstigatorActor->GetActorLocation());
 	}
-	AttackedLately.Invalidate();
-	GetWorldTimerManager().SetTimer(AttackedLately,this,&AJAICharacter::AttackedLatelyClear, 30.0f, false);
+	AttackedLatelyTimeHandle.Invalidate();
+	GetWorldTimerManager().SetTimer(AttackedLatelyTimeHandle,this,&AJAICharacter::AttackedLatelyClear, 30.0f, false);
 }
 
 void AJAICharacter::Attack()
@@ -102,7 +102,7 @@ void AJAICharacter::DealDemage()
 	CollisionShape.ShapeType = ECollisionShape::Sphere;
 	GetWorld()->OverlapMultiByChannel(OutOverlaps, Pos, Rot, TraceChannel, CollisionShape);
 
-	for (auto OverLapPawn : OutOverlaps)
+	for (auto& OverLapPawn : OutOverlaps)
 	{
 		//如果存在组件则扣血
 		UJAttributeComponent* OtherAttributeComp = Cast<UJAttributeComponent>(OverLapPawn.Actor->GetComponentByClass(UJAttributeComponent::StaticClass()));
@@ -114,7 +114,7 @@ void AJAICharacter::DealDemage()
 
 void AJAICharacter::AttackedLatelyClear()
 {
-	AttackedLately.Invalidate();
+	AttackedLatelyTimeHandle.Invalidate();
 }
 
 void AJAICharacter::AttackCDClaer()

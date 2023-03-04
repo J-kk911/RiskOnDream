@@ -14,8 +14,10 @@ AJBlackholeProjectile::AJBlackholeProjectile()
 	RadialForceComp->ForceStrength = -5000000.0f;
 	RadialForceComp->bImpulseVelChange = true;
 	//不影响角色
-	RadialForceComp->RemoveObjectTypeToAffect(ObjectTypeQuery3);
-	RadialForceComp->AddObjectTypeToAffect(ObjectTypeQuery2);
+	//RadialForceComp
+	//在碰撞的对象那里增加
+	RadialForceComp->RemoveObjectTypeToAffect(ObjectTypeQuery3);//不影响pawn
+	RadialForceComp->AddObjectTypeToAffect(ObjectTypeQuery2);//影响WorldDynamic
 
 	SphereComp->SetCollisionProfileName("OverlapAll");
 
