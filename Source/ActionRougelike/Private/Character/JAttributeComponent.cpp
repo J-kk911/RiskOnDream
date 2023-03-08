@@ -19,7 +19,7 @@ bool UJAttributeComponent::IsAlive() const
 bool UJAttributeComponent::ApplyHealthChange(float Delta,FVector Location,AActor* Instigator)
 {
 	if (Instigator) {
-		UE_LOG(LogTemp, Warning, TEXT("attributeComp"));
+		//UE_LOG(LogTemp, Warning, TEXT("attributeComp"));
 	}
 	if (Health <= 0) return false;
 	//UE_LOG(LogTemp, Warning, TEXT("ATTACK!!"))

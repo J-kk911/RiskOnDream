@@ -6,7 +6,20 @@
 #include "Components/ActorComponent.h"
 #include "JAttributeComponent.generated.h"
 
-//自定义动态多播代理？？广播后，用来让上层函数触发
+/*
+* 多播的意思是可以绑定多个
+自定义动态多播代理
+	广播后，用来让上层函数触发
+	定义了一种变量为FOnHealthChanged的变量
+	在该文件的.cpp中可以用.broadcast()函数广播
+ 例：
+	OnHealthChanged.Broadcast(Instigator, this, Health, Delta);
+ 
+	上层通过将函数动态绑定到这个变量来实现调用
+ 例：
+	AttributeComp->OnHealthChanged.AddDynamic(this, &AJAICharacter::OnHealthChanged);
+*/
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnHealthChanged, AActor*, InstigatorActor, UJAttributeComponent*, OwningComp, float, NewHealth, float, Delta);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )

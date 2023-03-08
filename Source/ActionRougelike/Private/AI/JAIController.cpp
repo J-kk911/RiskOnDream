@@ -1,6 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
+// 用来驱动角色移动
+// 最好在这里更新黑板值
+// 
 
-
+#include "Character/JCharacter.h"
 #include "AI/JAIController.h"
 #include "AI/JAICharacter.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
@@ -24,7 +27,7 @@ AJAIController::AJAIController()
 
 void AJAIController::OnPossess(APawn* InPawn)
 {
-
+	ControllPawn = InPawn;
 
 	AJAICharacter* AICharacter = Cast<AJAICharacter>(InPawn);
 	if (AICharacter == nullptr) {
@@ -39,9 +42,11 @@ void AJAIController::OnPossess(APawn* InPawn)
 			//运行行为树
 			BehaviorTreeComp->StartTree(*BehaviorTree);
 			AICharacter->BlackboardComp->InitializeBlackboard(*BehaviorTree->BlackboardAsset); // 初始化
-			UE_LOG(LogTemp, Error, TEXT("start"));
+			//UE_LOG(LogTemp, Error, TEXT("start"));
 		}
 	}
+	AICharacter->BlackboardComp->SetValueAsVector("TargetLocation", AICharacter->GetActorLocation());
+
 }
 
 void AJAIController::OnUnPossess()
@@ -58,4 +63,21 @@ void AJAIController::OnUnPossess()
 FORCEINLINE UBehaviorTreeComponent* AJAIController::GetBehaviorTreeComp()
 {
 	return AJAIController::BehaviorTreeComp;
+}
+
+void AJAIController::HaveSeePawn(APawn* TargetPawn)
+{
+	//UE_LOG(LogTemp, Error, TEXT("this! "));
+
+	TargetPawn = Cast<AJCharacter>(TargetPawn);
+	if (TargetPawn) {
+		FVector Location = TargetPawn->GetActorLocation();
+		AJAICharacter* AICharacter  = Cast<AJAICharacter>(this->ControllPawn);
+		//UE_LOG(LogTemp, Error, TEXT("i see you ! "));
+
+		if (AICharacter) {
+			AICharacter->BlackboardComp->SetValueAsVector("TargetLocation", Location);
+			//UE_LOG(LogTemp, Error, TEXT("i see you %s "), *Location.ToString());
+		}
+	}
 }

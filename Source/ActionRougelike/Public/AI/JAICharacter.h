@@ -29,9 +29,9 @@ protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
-	//当看到玩家
-	UFUNCTION()
-	void HaveSeePawn(APawn* Pawn);
+	////当看到玩家
+	//UFUNCTION()
+	//void HaveSeePawn(APawn* Pawn);
 
 public:	
 	// Called every frame
@@ -96,6 +96,7 @@ protected:
 
 
 public:
+
 	UPROPERTY(VisibleAnywhere)
 		FTimerHandle AttackTimeHandle;
 
@@ -110,5 +111,10 @@ public:
 
 	UFUNCTION()
 		void Attack();
-
+	
+	//受击恢复
+	UPROPERTY()
+		FTimerHandle RecoveryAttackedTimeHandle;
+	//受击恢复
+	void RecoveryAttackedMode();
 };

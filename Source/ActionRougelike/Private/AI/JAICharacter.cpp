@@ -1,5 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
+// 最好不要在这里更新黑板的值
 
 #include "AI/JAICharacter.h"
 #include "AI/JAIController.h"
@@ -32,10 +32,10 @@ void AJAICharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	//绑定看到角色时候的动作
-	PawnSensingComp->OnSeePawn.AddDynamic(this, &AJAICharacter::HaveSeePawn);
+	AJAIController* AIController = Cast<AJAIController>(GetController());
 
-	BlackboardComp->SetValueAsVector("TargetLocation", this->GetActorLocation());
+	//绑定看到角色时候的动作
+	PawnSensingComp->OnSeePawn.AddDynamic(AIController, &AJAIController::HaveSeePawn);
 
 	AttributeComp->SetHealth(200.0);
 
@@ -56,14 +56,7 @@ void AJAICharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 }
 
-void AJAICharacter::HaveSeePawn(APawn* Pawn)
-{
-	if (GetWorld()->GetFirstPlayerController()->GetPawn() == Pawn) {
-		FVector Location = Pawn->GetActorLocation();
-		BlackboardComp->SetValueAsVector("TargetLocation", Location);
-		//UE_LOG(LogTemp, Error, TEXT("i see you %s "), *Location.ToString());
-	}
-}
+
 
 void AJAICharacter::OnHealthChanged(AActor* InstigatorActor, UJAttributeComponent* OwningComp, float NewHealth, float Delta)
 {
@@ -80,6 +73,11 @@ void AJAICharacter::OnHealthChanged(AActor* InstigatorActor, UJAttributeComponen
 	}
 	AttackedLatelyTimeHandle.Invalidate();
 	GetWorldTimerManager().SetTimer(AttackedLatelyTimeHandle,this,&AJAICharacter::AttackedLatelyClear, 30.0f, false);
+
+	BlackboardComp->SetValueAsBool("bPlayAttackedAnim", true);
+
+	RecoveryAttackedTimeHandle.Invalidate();
+	GetWorldTimerManager().SetTimer(RecoveryAttackedTimeHandle, this, &AJAICharacter::RecoveryAttackedMode, 0.5f, false);
 }
 
 void AJAICharacter::Attack()
@@ -89,6 +87,11 @@ void AJAICharacter::Attack()
 	AttackCDTimeHandle.Invalidate();
 	GetWorldTimerManager().SetTimer(AttackCDTimeHandle, this, &AJAICharacter::AttackCDClaer, AttackCD);
 
+}
+
+void AJAICharacter::RecoveryAttackedMode()
+{
+	BlackboardComp->SetValueAsBool("bPlayAttackedAnim", false);
 }
 
 void AJAICharacter::DealDemage()

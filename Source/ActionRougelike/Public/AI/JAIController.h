@@ -32,4 +32,9 @@ public:
 
 public:
 	FORCEINLINE UBehaviorTreeComponent* GetBehaviorTreeComp();
+
+	UFUNCTION()
+	void HaveSeePawn(APawn* TargetPawn);
+
+	APawn* ControllPawn;
 };
