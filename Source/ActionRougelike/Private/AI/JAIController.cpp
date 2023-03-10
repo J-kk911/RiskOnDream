@@ -3,8 +3,8 @@
 // 最好在这里更新黑板值
 // 
 
-#include "Character/JCharacter.h"
 #include "AI/JAIController.h"
+#include "Character/JCharacter.h"
 #include "AI/JAICharacter.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
@@ -77,7 +77,13 @@ void AJAIController::HaveSeePawn(APawn* TargetPawn)
 
 		if (AICharacter) {
 			AICharacter->BlackboardComp->SetValueAsVector("TargetLocation", Location);
-			//UE_LOG(LogTemp, Error, TEXT("i see you %s "), *Location.ToString());
+			UE_LOG(LogTemp, Error, TEXT("i see you %s "), *Location.ToString());
+			AICharacter->ChangeToAttackMode();
 		}
 	}
+
+
+
+		
+
 }

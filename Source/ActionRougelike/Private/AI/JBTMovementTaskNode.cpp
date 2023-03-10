@@ -21,10 +21,13 @@ EBTNodeResult::Type UJBTMovementTaskNode::ExecuteTask(UBehaviorTreeComponent& Ow
 	UBlackboardComponent* BlackboardComp = AICharacter->BlackboardComp;
 	if (BlackboardComp != nullptr && AICharacter != nullptr) {
 		FVector TargetLocation = BlackboardComp->GetValueAsVector(TEXT("TargetLocation"));
-		//UE_LOG(LogTemp, Error, TEXT("go! %s"), *TargetLocation.ToString());
-		 // 让AI移动到targetlocation
+
 		AIController->MoveToLocation(TargetLocation);
 		return EBTNodeResult::Succeeded;
+		
+		//UE_LOG(LogTemp, Error, TEXT("go! %s"), *TargetLocation.ToString());
+		 // 让AI移动到targetlocation
+
 	}
 	return EBTNodeResult::Failed;
 }

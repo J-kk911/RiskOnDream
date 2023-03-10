@@ -13,6 +13,7 @@ EBTNodeResult::Type UJBTAttackTaskNode::ExecuteTask(UBehaviorTreeComponent& Owne
 	//通过控制器获得Character
 	AJAICharacter* AAICharacter = Cast<AJAICharacter>(AAIController->GetPawn());
 
+	AAICharacter->ChangeToAttackMode();
 	AAICharacter->Attack();
 	return EBTNodeResult::Succeeded;
 }

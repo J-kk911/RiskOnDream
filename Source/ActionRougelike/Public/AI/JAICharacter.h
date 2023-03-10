@@ -29,6 +29,7 @@ protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
+	//改到controller里边了
 	////当看到玩家
 	//UFUNCTION()
 	//void HaveSeePawn(APawn* Pawn);
@@ -36,6 +37,7 @@ private:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
 
 	//黑板组件资源
 	UPROPERTY(EditAnywhere)
@@ -59,10 +61,9 @@ public:
 	UFUNCTION()
 		void OnHealthChanged(AActor* InstigatorActor, UJAttributeComponent* OwningComp, float NewHealth, float Delta);
 
-	
-
 //攻击
 protected:
+
 	UPROPERTY(EditAnywhere, Category = "Attack")
 		float AttackCD = 5.0f;
 
@@ -92,16 +93,40 @@ protected:
 		void DealDemage();
 
 	UFUNCTION(BlueprintCallable)
-		void AttackedLatelyClear();
+		void RecoveryIdleMode();
+
+protected:
+	UPROPERTY(EditAnywhere)
+	float TimeToChangePatrol = 10.0;
 
 
-public:
+	UPROPERTY(EditAnywhere)
+	float KeepAttackModeTime = 5.0f;
 
-	UPROPERTY(VisibleAnywhere)
-		FTimerHandle AttackTimeHandle;
+	UPROPERTY(EditAnywhere)
+	FVector LLocation;
+
+	UPROPERTY(EditAnywhere)
+	FVector RLocation;
 
 	UPROPERTY()
-		FTimerHandle AttackedLatelyTimeHandle;
+	FTimerHandle PatrolChangeTimeHandle;
+
+
+	//受击恢复
+	void RecoveryAttackMode();
+
+	void ChangePatrolLocation();
+
+public:
+	UPROPERTY(EditAnywhere)
+	FVector PatrolLocation;
+
+	UPROPERTY(VisibleAnywhere)
+		FTimerHandle AttackAnimTimeHandle;
+
+	UPROPERTY()
+		FTimerHandle AttackModeTimeHandle;
 
 	UPROPERTY()
 		FTimerHandle AttackCDTimeHandle;
@@ -115,6 +140,8 @@ public:
 	//受击恢复
 	UPROPERTY()
 		FTimerHandle RecoveryAttackedTimeHandle;
-	//受击恢复
-	void RecoveryAttackedMode();
+
+
+	//进入战斗状态
+	void ChangeToAttackMode();
 };
